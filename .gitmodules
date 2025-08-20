@@ -1,6 +1,6 @@
-[submodule "assistant-back"]
-    path = assistant-back
-    url = https://github.com/KaloinaMelodie/assistant-back.git
+[submodule "app"]
+    path = app
+    url = https://github.com/KaloinaMelodie/app.git
 
 [submodule "assistant-front"]
     path = assistant-front
