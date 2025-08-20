@@ -1,0 +1,13 @@
+{  
+  "login":{
+    "title": "Connectez-vous",
+    "username": "Nom d’utilisateur ou adresse e-mail",
+    "username_placeholder": "Nom d’utilisateur",
+    "password": "Mot de passe",
+    "submit": "Connectez-vous",
+    "forgot_password": "Mot de passe oublié ?",
+    "or":"ou",
+    "register": "S'inscrire"
+  }
+}
+
