@@ -1,0 +1,7 @@
+[submodule "assistant-back"]
+    path = assistant-back
+    url = https://github.com/KaloinaMelodie/assistant-back.git
+
+[submodule "assistant-front"]
+    path = assistant-front
+    url = https://github.com/KaloinaMelodie/assistant-front.git
