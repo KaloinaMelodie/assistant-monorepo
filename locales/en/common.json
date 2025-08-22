@@ -1,5 +1,12 @@
 {
-  "login":{
-    "title": "Login"
+  "login": {
+    "title": "Login",
+    "username": "Username or email address",
+    "username_placeholder": "User name",
+    "password": "Password",
+    "submit": "Log in",
+    "forgot_password": "Forgot your password?",
+    "or": "Or",
+    "register": "Register"
   }
 }
