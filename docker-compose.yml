@@ -1,0 +1,54 @@
+version: "3.9"
+
+services:
+  api:
+    build: ./app
+    container_name: app
+    env_file:
+      - ./app/app/.env.production
+    ports:
+      - "8000:8000"
+    environment:
+      - GCP_PROJECT_ID=${GCP_PROJECT_ID}
+      - GOOGLE_APPLICATION_CREDENTIALS=/run/secrets/gcp_key.json
+      - GCP_TRANSLATE_LOCATION=${GCP_TRANSLATE_LOCATION:-global}
+      - LOCALES_DIR=/data/locales
+      - CORS_ALLOW_ORIGINS=http://localhost:8080
+    volumes:
+      - ./locales:/data/locales:rw          # monte les JSON i18n
+      - ./app:/app:rw                       # (option) hot-reload si tu modifies l'API
+    secrets:
+      - source: gcp_key
+        target: gcp_key.json
+
+  web:
+    build:
+      context: ./front-assistant
+      # args:
+      #   VITE_I18N_BASE: http://localhost:8000/v1    # le front parlera à l'API via le réseau compose
+    container_name: i18n_web
+    ports:
+      - "8080:80"
+    depends_on:
+      - api
+
+  mongo:
+    image: mongo:7
+    container_name: dev-mongo
+    restart: unless-stopped
+    ports:
+      - "27017:27017"              # accès local si tu en as besoin (MongoDB Compass, etc.)
+    volumes:
+      - mongo_data:/data/db
+    healthcheck:
+      test: ["CMD", "mongosh", "--quiet", "mongodb://localhost:27017", "--eval", "db.adminCommand('ping').ok"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+secrets:
+  gcp_key:
+    file: ./gcp-key.json
+
+volumes:
+  mongo_data:

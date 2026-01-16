@@ -1,1 +1,4 @@
 cicd-git.code-workspace
+.env
+note.md
+gcp-key.json
