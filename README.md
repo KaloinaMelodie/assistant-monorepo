@@ -58,11 +58,31 @@ L’assistant s’adresse à toutes les catégories d’utilisateurs de MGMERL, 
 - Mise à jour automatique des contenus grâce à des workflows planifiés  
 - Suivi des interactions utilisateurs via des tableaux de bord analytiques  
 
-![Interface de conversation – Navigation dans les ressources du système](images/image-10.png)
+<table align="center">
+  <tr>
+    <td align="center">
+      <img src="images/image-10.png" width="600">
+      <br>
+      <sub>Conversation interface – Navigating system resources / Interface de conversation – Navigation dans les ressources du système</sub>
+    </td>
+    
+  </tr>
+  <tr>
+    <td align="center">
+      <img src="images/image-11.png" width="600">
+      <br>
+      <sub>Conversation interface – System training and learning / Interface de conversation – Formation et apprentissage du système</sub>
+    </td>
+  </tr>
+  <tr>
+    <td align="center">
+      <img src="images/image-12.png" width="600">
+      <br>
+      <sub>Interface – Visualization of interaction reports / Interface – Visualisation des rapports d’interaction</sub>
+    </td>
+  </tr>
+</table>
 
-![Interface de conversation – Formation et apprentissage du système](images/image-11.png)
-
-![Interface – Visualisation des rapports d’interaction](images/image-12.png)
 ---
 
 ## Technical Architecture
