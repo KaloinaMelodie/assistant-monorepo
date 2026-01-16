@@ -96,15 +96,15 @@ Les composants clés incluent :
 </figure>
 
 <figure align="center" style="display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 20px;">
-  <img src="images/image-13.png"  width="30%">
-  <img src="images/image-14.png"  width="30%">
-  <img src="images/image-15.png"  width="30%">
+  <img src="images/image-13.png"  width="20%">
+  <img src="images/image-14.png"  width="20%">
+  <img src="images/image-15.png"  width="20%">
 </figure>
 
 <figure align="center" style="display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 20px;">
-  <img src="images/image-16.png"  width="30%">
-  <img src="images/image-17.png"  width="30%">
-  <img src="images/image-18.png"  width="30%">
+  <img src="images/image-16.png"  width="20%">
+  <img src="images/image-17.png"  width="20%">
+  <img src="images/image-18.png"  width="20%">
 <figcaption>Technologies used / Technologies utilisées</figcaption>
 </figure>
 
