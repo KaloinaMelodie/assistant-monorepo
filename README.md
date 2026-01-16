@@ -58,6 +58,16 @@ L’assistant s’adresse à toutes les catégories d’utilisateurs de MGMERL, 
 - Mise à jour automatique des contenus grâce à des workflows planifiés  
 - Suivi des interactions utilisateurs via des tableaux de bord analytiques  
 
+---
+
+### Monitoring and Analytics
+
+**EN:**  
+Google Analytics dashboards are integrated to monitor user behavior, measure usage patterns, and provide visibility into how the system is adopted and used across different user profiles.
+
+**FR :**  
+Des tableaux de bord Google Analytics sont intégrés afin de suivre le comportement des utilisateurs, analyser les usages et offrir une visibilité sur l’adoption du système par les différents profils.
+
 <table align="center">
   <tr>
     <td align="center">
@@ -109,8 +119,6 @@ Les composants clés incluent :
 - Une base de données vectorielle Milvus pour la recherche sémantique  
 - L’intégration de LLMs dans un pipeline RAG  
 
-<!-- ![alt text](images/image-13.png)![alt text](images/image-14.png)![alt text](images/image-15.png)![alt text](images/image-16.png)![alt text](images/image-17.png)![alt text](images/image-18.png) -->
-<!-- Image unique avec caption -->
 <table align="center">
   <tr>
     <td align="center">
@@ -121,7 +129,6 @@ Les composants clés incluent :
   </tr>
 </table>
 
-<!-- Grille 3x2 pour les images + caption -->
 <table align="center">
   <tr>
     <td align="center"><img src="images/image-13.png" width="120"></td>
@@ -140,8 +147,23 @@ Les composants clés incluent :
 
 
 
-![Diagramme de l’architecture des bases de données et systèmes de stockage](images/image-8.png)
-![Diagramme de séquence du fonctionnement de l’assistant conversationnel jusqu’à mise à jour de base vectorielle Milvus](images/image-9.png)
+<table align="center">
+  <tr>
+    <td align="center">
+      <img src="images/image-8.png" width="600">
+      <br>
+      <sub>Diagram of database architecture and storage systems / Diagramme de l’architecture des bases de données et systèmes de stockage</sub>
+    </td>
+    
+  </tr>
+  <tr>
+    <td align="center">
+      <img src="images/image-9.png" width="600">
+      <br>
+      <sub>Sequence diagram of the conversational assistant's operation until the Milvus vector database is updated / Diagramme de séquence du fonctionnement de l’assistant conversationnel jusqu’à mise à jour de base vectorielle Milvus</sub>
+    </td>
+  </tr>
+</table>
 ---
 
 ## Data Processing Workflow
@@ -152,23 +174,67 @@ Documents and resources are collected from MGMERL, processed through automated E
 **FR :**  
 Les documents et ressources sont collectés depuis MGMERL, traités via des pipelines ETL automatisés, transformés en données structurées puis encodés sous forme de vecteurs. Ces vecteurs sont stockés dans Milvus et interrogés à l’exécution afin de fournir des réponses contextualisées et sourcées.
 
-![Workflow Formulaire – Étape 1 : Récupération des formulaires](images/image.png)
-![Workflow Formulaire – Étape 2 : Sauvegarde des données](images/image-1.png)
-![Workflow Formulaire – Étape 3 : Validation table NoSQL](images/image-2.png)
-![Workflow Formulaire – Étape 4 : Importation des données dans NoSQL](images/image-3.png)
-![Workflow Formulaire – Étape 5 : Exécution Spark : transformation](images/image-4.png)
-![Workflow Formulaire – Étape 6 : Mise à jour des données dans Milvus POST](images/image-5.png)
-![Workflow Formulaire – Étape 7 : Mise à jour des données dans Milvus DELETE](images/image-6.png)
-![Workflow Formulaire – Étape 8 : Exécution Spark mise à jour du statut local](images/image-7.png)
----
+<table align="center">
+<tr>
+    <td align="center">
+      <img src="images/image.png" width="600">
+      <br>
+      <sub>Form Workflow – Step 1: Retrieving Forms / Workflow Formulaire – Étape 1 : Récupération des formulaires</sub>
+    </td>
+    
+  </tr>
+  <tr>
+    <td align="center">
+      <img src="images/image-1.png" width="600">
+      <br>
+      <sub>Form Workflow – Step 2: Saving Data / Workflow Formulaire – Étape 2 : Sauvegarde des données</sub>
+    </td>
+    
+  </tr>
+  <tr>
+    <td align="center">
+      <img src="images/image-2.png" width="600">
+      <br>
+      <sub>Form Workflow – Step 3: NoSQL table validation / Workflow Formulaire – Étape 3 : Validation table NoSQL</sub>
+    </td>
+  </tr>
+  <tr>
+    <td align="center">
+      <img src="images/image-3.png" width="600">
+      <br>
+      <sub>Form Workflow – Step 4: Importing Data into NoSQL / Workflow Formulaire – Étape 4 : Importation des données dans NoSQL</sub>
+    </td>
+  </tr>
+  <tr>
+    <td align="center">
+      <img src="images/image-4.png" width="600">
+      <br>
+      <sub>Form Workflow – Step 5: Spark Execution: Transformation / Workflow Formulaire – Étape 5 : Exécution Spark : transformation</sub>
+    </td>
+  </tr>
+  <tr>
+    <td align="center">
+      <img src="images/image-5.png" width="600">
+      <br>
+      <sub>Form Workflow – Step 6: Updating Data in Milvus POST / Workflow Formulaire – Étape 6 : Mise à jour des données dans Milvus POST</sub>
+    </td>
+  </tr>
+  <tr>
+    <td align="center">
+      <img src="images/image-6.png" width="600">
+      <br>
+      <sub>Form Workflow – Step 7: Updating Data in Milvus DELETE / Workflow Formulaire – Étape 7 : Mise à jour des données dans Milvus DELETE</sub>
+    </td>
+  </tr>
+  <tr>
+    <td align="center">
+      <img src="images/image-7.png" width="600">
+      <br>
+      <sub>Form Workflow – Step 8: Spark Execution Local Status Update / Workflow Formulaire – Étape 8 : Exécution Spark mise à jour du statut local</sub>
+    </td>
+  </tr>
+</table>
 
-## Monitoring and Analytics
-
-**EN:**  
-Google Analytics dashboards are integrated to monitor user behavior, measure usage patterns, and provide visibility into how the system is adopted and used across different user profiles.
-
-**FR :**  
-Des tableaux de bord Google Analytics sont intégrés afin de suivre le comportement des utilisateurs, analyser les usages et offrir une visibilité sur l’adoption du système par les différents profils.
 
 ---
 
@@ -193,16 +259,14 @@ Des tableaux de bord Google Analytics sont intégrés afin de suivre le comporte
 **EN:**  
 This project was developed as part of an academic and professional internship, with a strong emphasis on software architecture, data modeling, system integration, and user-centered design, under real-world constraints.
 
-The official thesis document for my project can be accessed at the link
-below.
+The official thesis document for my project can be accessed at the link below.
 https://jumpshare.com/share/aydw0o8fCHXxyJHrefFZ
 
 
 **FR :**  
 Ce projet a été réalisé dans le cadre d’un stage académique et professionnel, avec un fort accent sur l’architecture logicielle, la modélisation des données, l’intégration de systèmes et la conception orientée utilisateur, dans un contexte réel et contraint.
 
-The official thesis document for my project can be accessed at the link
-below.
+Le document officiel de ma thèse est accessible via le lien ci-dessous.
 https://jumpshare.com/share/aydw0o8fCHXxyJHrefFZ
 
 
