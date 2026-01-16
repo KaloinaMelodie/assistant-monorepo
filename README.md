@@ -90,23 +90,34 @@ Les composants clés incluent :
 - L’intégration de LLMs dans un pipeline RAG  
 
 <!-- ![alt text](images/image-13.png)![alt text](images/image-14.png)![alt text](images/image-15.png)![alt text](images/image-16.png)![alt text](images/image-17.png)![alt text](images/image-18.png) -->
-<figure align="center">
-  <img src="images/image-19.png" >
-  <figcaption>Project architecture / Architecture du projet</figcaption>
-</figure>
+<!-- Image unique avec caption -->
+<table align="center">
+  <tr>
+    <td align="center">
+      <img src="images/image-19.png" width="600">
+      <br>
+      <sub>Project architecture / Architecture du projet</sub>
+    </td>
+  </tr>
+</table>
 
-<figure align="center" style="display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 20px;">
-  <img src="images/image-13.png"  width="20%">
-  <img src="images/image-14.png"  width="20%">
-  <img src="images/image-15.png"  width="20%">
-</figure>
+<!-- Grille 3x2 pour les images + caption -->
+<table align="center">
+  <tr>
+    <td align="center"><img src="images/image-13.png" width="120"></td>
+    <td align="center"><img src="images/image-14.png" width="120"></td>
+    <td align="center"><img src="images/image-15.png" width="120"></td>
+  </tr>
+  <tr>
+    <td align="center"><img src="images/image-16.png" width="120"></td>
+    <td align="center"><img src="images/image-17.png" width="120"></td>
+    <td align="center"><img src="images/image-18.png" width="120"></td>
+  </tr>
+  <tr>
+    <td colspan="3" align="center"><sub>Technologies used / Technologies utilisées</sub></td>
+  </tr>
+</table>
 
-<figure align="center" style="display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 20px;">
-  <img src="images/image-16.png"  width="20%">
-  <img src="images/image-17.png"  width="20%">
-  <img src="images/image-18.png"  width="20%">
-<figcaption>Technologies used / Technologies utilisées</figcaption>
-</figure>
 
 
 ![Diagramme de l’architecture des bases de données et systèmes de stockage](images/image-8.png)
