@@ -1,0 +1,3222 @@
+{
+  "name": "Survey data workflow",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -1232,
+        960
+      ],
+      "id": "35b03f95-30b3-45a7-bdb2-ee8f3dbbc154",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Unifie 3 cas : succès normal, 200 avec {error}, et non-200 (via Continue On Fail).\n// Récupère l'état courant depuis le nœud \"State\".\n\nconst state = $('State').first().json;  // <-- état vivant\nconst BASE = state.baseMs ?? 1000;\nconst MAX  = state.maxMs  ?? 30000;\nconst MAX_ATTEMPT = state.maxAttempt ?? 5;\nconst attempt = state.attempt ?? 0;\n\nconst inItem = $input.first().json;\n\nfunction hasLogicalError(payload) {\n  if (!payload) return false;\n  if (Array.isArray(payload)) {\n    return payload.some(x => x && typeof x === 'object' && x.error);\n  }\n  return !!payload.error;\n}\n\nconst isError = hasLogicalError(inItem);\n\n// Cas ERREUR -> planifier retry si possible\nif (isError && attempt < MAX_ATTEMPT) {\n  const nextAttempt = attempt + 1;\n  const waitMs = Math.min(BASE * Math.pow(2, nextAttempt - 1), MAX);\n  const msg = (inItem.error && (inItem.error.message || inItem.error))\n                ? (inItem.error.message || JSON.stringify(inItem.error))\n                : 'Unknown error';\n  return [{\n    json: {\n      ...state,\n      attempt: nextAttempt,\n      waits:waitMs/1000,\n      ok: false,\n      errorMessage: msg\n    }\n  }];\n}\n\n// Cas ERREUR et plus de tentatives -> échec final\nif (isError && attempt >= MAX_ATTEMPT) {\n  const msg = (inItem.error && (inItem.error.message || inItem.error))\n                ? (inItem.error.message || JSON.stringify(inItem.error))\n                : 'Unknown error';\n  // throw new Error(`Final failure after ${attempt} attempts: ${msg}`);\n  return [{\n  json: {\n    ...state,\n    ok: false,\n    final: true,\n    errorMessage: msg\n  }\n}];\n}\n\n// Cas SUCCÈS -> renvoyer les items API (avec ok:true)\n// if (Array.isArray(inItem)) {\n//   return inItem.map(x => ({ json: { ...x, ok: true } }));\n// }\n// return [{ json: { ...inItem, ok: true } }];\n// SUCCÈS — préserver l’appariement\nif (Array.isArray(inItem)) {\n  return inItem.map((x, idx) => ({\n    json: { ...x, ok: true },\n    pairedItem: { item: 0 }\n  }));\n}\nreturn [{\n  json: { ...inItem, ok: true },\n  pairedItem: { item: 0 }\n}];\n\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        688,
+        1536
+      ],
+      "id": "40b57a62-2ccf-4b82-8454-5c5084ed703f",
+      "name": "Decide & Backoff",
+      "executeOnce": false
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "75aec18f-30b8-4765-95b9-672489ab8505",
+              "leftValue": "={{ $json.ok }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        848,
+        1536
+      ],
+      "id": "51d92503-c165-4fbe-8dd4-70461df7a569",
+      "name": "OK?"
+    },
+    {
+      "parameters": {
+        "amount": "={{ $json.waits }}"
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        -112,
+        1728
+      ],
+      "id": "10825f55-72b7-4bbd-9702-f6804e7b0895",
+      "name": "Backoff wait",
+      "webhookId": "f1abba5c-a2f7-404b-9e81-2913f6f8b333"
+    },
+    {
+      "parameters": {
+        "jsCode": "return $input.all();"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -352,
+        1536
+      ],
+      "id": "0940532b-e806-482a-ba68-a7f1ed684b44",
+      "name": "State"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "eead3369-b3ca-4d0a-98ea-be2acd1e7054",
+              "name": "attempt",
+              "value": 0,
+              "type": "number"
+            },
+            {
+              "id": "25b7ae90-cb6d-45cd-8e9a-dabccebee784",
+              "name": "maxAttempt",
+              "value": 2,
+              "type": "number"
+            },
+            {
+              "id": "a7bae738-2829-4b8b-919c-8263ecae3143",
+              "name": "baseMs",
+              "value": 1000,
+              "type": "number"
+            },
+            {
+              "id": "62ec926f-57ee-4468-bbc9-6b4a4bef5381",
+              "name": "maxMs",
+              "value": 30000,
+              "type": "number"
+            },
+            {
+              "id": "cf21bcee-0063-4b29-8174-feac1f9a4e13",
+              "name": "logPath",
+              "value": "=/vagrant/logs/survey_workflow.jsonl",
+              "type": "string"
+            },
+            {
+              "id": "fae78e38-ba52-4b82-bf25-f2c6b63a13b5",
+              "name": "dataPath ",
+              "value": "/vagrant/nosql/wrapped_data_survey.json",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -560,
+        1536
+      ],
+      "id": "9b14b8e7-e4b4-4612-a8a7-e10eed96ca56",
+      "name": "Init state"
+    },
+    {
+      "parameters": {
+        "jsCode": "const st = $('State').first().json;\n\nreturn [{\n  json: {\n    ts: new Date().toISOString(),\n    stage: 'http',\n    event: 'attempt_start',  \n    attempt: (st.attempt ?? 0) ,\n    logPath: st.logPath\n  }\n}];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        48,
+        1488
+      ],
+      "id": "ef98053a-141b-423b-ae5d-d485ec86de8b",
+      "name": "Log attempt_start"
+    },
+    {
+      "parameters": {
+        "jsCode": "const st = $input.first().json; // contient attempt, waitMs, errorMessage, logPath via State\n\nreturn [{\n  json: {\n    ts: new Date().toISOString(),\n    stage: 'http',\n    event: 'retry',\n    attempt: st.attempt,\n    waitMs: st.waitMs,\n    error: st.errorMessage || 'Unknown error',\n    logPath: st.logPath\n  }\n}];\n\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        48,
+        1648
+      ],
+      "id": "a610738f-bea1-459f-92eb-5f3a5c58b607",
+      "name": "Log retry"
+    },
+    {
+      "parameters": {
+        "jsCode": "const st = $('State').first().json;\n\nreturn [\n  {\n    json: {\n      ts: new Date().toISOString(),\n    stage: 'http',\n    event: 'success',\n    attempt: (st.attempt ?? 0) + 1,\n      logPath: st.logPath,\n    },\n  },\n];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1008,
+        1520
+      ],
+      "id": "14bd1266-6a20-40d7-a4d2-0bf790c04eb4",
+      "name": "Log success"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Certaines versions d'n8n passent l'erreur dans $json\nconst st = $(\"State\").first().json;\nconst errorMsg =\n  $input.first().json.message || $input.first().json.error || \"Final failure\";\n\nreturn [\n  {\n    json: {\n      ts: new Date().toISOString(),\n      stage: \"http\",\n      event: \"final_fail\",\n      attempt: st.attempt ?? null,\n      error: errorMsg,\n      logPath: st.logPath,\n    },\n  },\n];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        560,
+        1776
+      ],
+      "id": "aa6087f3-ebb3-4c2b-94f0-3e92cddca52f",
+      "name": "Log final_fail"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "89bf5ca5-feaf-4e9f-acea-6cc373516f67",
+              "leftValue": "={{ $json.attempt }}",
+              "rightValue": 0,
+              "operator": {
+                "type": "number",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -160,
+        1536
+      ],
+      "id": "26f2e7ca-c6f9-4c51-a131-d8403a344644",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "1196b8fc-1761-498b-825f-990583c417cc",
+              "leftValue": "={{$json.final}}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        320,
+        1744
+      ],
+      "id": "55555a52-2be6-4c2f-901e-f95a55b27ebe",
+      "name": "Final?"
+    },
+    {
+      "parameters": {
+        "authentication": "privateKey",
+        "command": "=bash -lc 'jq -c -n \\\n  --arg ts \"{{$json.ts}}\" \\\n  --arg stage \"{{$json.stage}}\" \\\n  --arg event \"{{$json.event}}\" \\\n  --argjson attempt {{$json.attempt}} \\\n  \"{\\\"ts\\\":\\$ts,\\\"stage\\\":\\$stage,\\\"event\\\":\\$event,\\\"attempt\\\":\\$attempt}\" \\\n  >> \"{{$json.logPath}}\"'\n"
+      },
+      "type": "n8n-nodes-base.ssh",
+      "typeVersion": 1,
+      "position": [
+        320,
+        1536
+      ],
+      "id": "28c35857-898a-4d4c-a8d8-ed55b6986c62",
+      "name": "Append log attempt_retry",
+      "retryOnFail": false,
+      "credentials": {
+        "sshPrivateKey": {
+          "id": "xm2ZPfPGfUHMrRyL",
+          "name": "SSH Vagrant"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "authentication": "privateKey",
+        "command": "=bash -lc 'jq -c -n \\\n  --arg ts \"{{$json.ts}}\" \\\n  --arg stage \"{{$json.stage}}\" \\\n  --arg event \"{{$json.event}}\" \\\n  --argjson attempt {{$json.attempt}} \\\n  \"{\\\"ts\\\":\\$ts,\\\"stage\\\":\\$stage,\\\"event\\\":\\$event,\\\"attempt\\\":\\$attempt}\" \\\n  >> \"{{$json.logPath}}\"'\n"
+      },
+      "type": "n8n-nodes-base.ssh",
+      "typeVersion": 1,
+      "position": [
+        720,
+        1776
+      ],
+      "id": "d7ecc217-1089-451d-814c-2c627c5da9a4",
+      "name": "Append log final_fail",
+      "credentials": {
+        "sshPrivateKey": {
+          "id": "xm2ZPfPGfUHMrRyL",
+          "name": "SSH Vagrant"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "authentication": "privateKey",
+        "command": "bash -lc '\nset -Eeuo pipefail\n\nsrc=\"/vagrant/nosql/tmp_survey.json\"         \ndst=\"/vagrant/nosql/wrapped_data_survey.jsonl\"\ntmp=\"${dst}.tmp.$$\"\nlock=\"${dst}.lock\"\n\ncleanup() { rm -f \"$tmp\" \"$lock\" >/dev/null 2>&1 || true; }\ntrap cleanup EXIT\n\nmkdir -p \"$(dirname \"$dst\")\"\n\n# Verrou non bloquant (code 75 si occupé)\nexec 9>\"$lock\"\nif ! flock -n 9; then\n  echo \"LOCK_BUSY: another run is writing $dst\" >&2\n  exit 75\nfi\n\n# 1) Vérifier que src existe et est un ARRAY JSON (code 76 sinon)\ntest -f \"$src\" || { echo \"SRC_MISSING: $src\" >&2; exit 76; }\njq -e \"type==\\\"array\\\"\" \"$src\" >/dev/null || { echo \"SRC_NOT_ARRAY_OR_BAD_JSON: $src\" >&2; exit 76; }\n\n# 2) Construire JSONL (code 77 si jq échoue)\nif ! jq -c \".[]\" \"$src\" > \"$tmp\"; then\n  echo \"JQ_ITER_FAILED\" >&2\n  exit 77\nfi\n\n# 3) Doit être non vide (code 78 sinon)\nif [ ! -s \"$tmp\" ]; then\n  echo \"TMP_EMPTY\" >&2\n  exit 78\nfi\n\n# 4) Swap atomique\nmv -f \"$tmp\" \"$dst\"\n\n# Succès explicite\necho \"BUILD_OK: $(wc -l < \"$dst\") lines -> $dst\" >&2\n'\n"
+      },
+      "type": "n8n-nodes-base.ssh",
+      "typeVersion": 1,
+      "position": [
+        2064,
+        1536
+      ],
+      "id": "72296cdb-d659-4c76-bfaf-28054904eb24",
+      "name": "Build data (atomic)",
+      "credentials": {
+        "sshPrivateKey": {
+          "id": "xm2ZPfPGfUHMrRyL",
+          "name": "SSH Vagrant"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "authentication": "privateKey",
+        "command": "bash -lc 'jq -c . \"/vagrant/nosql/wrapped_data_survey.jsonl\" >/dev/null'\n"
+      },
+      "type": "n8n-nodes-base.ssh",
+      "typeVersion": 1,
+      "position": [
+        2528,
+        1536
+      ],
+      "id": "324ddb10-464d-40f3-9171-838bcc11c337",
+      "name": "Validate JSONL",
+      "credentials": {
+        "sshPrivateKey": {
+          "id": "xm2ZPfPGfUHMrRyL",
+          "name": "SSH Vagrant"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "authentication": "privateKey",
+        "command": "=bash -lc 'jq -c -n \\\n  --arg ts \"{{$json.ts}}\" \\\n  --arg stage \"{{$json.stage}}\" \\\n  --arg event \"{{$json.event}}\" \\\n  --argjson attempt {{$json.attempt}} \\\n  \"{\\\"ts\\\":\\$ts,\\\"stage\\\":\\$stage,\\\"event\\\":\\$event,\\\"attempt\\\":\\$attempt}\" \\\n  >> \"{{$json.logPath}}\"'\n"
+      },
+      "type": "n8n-nodes-base.ssh",
+      "typeVersion": 1,
+      "position": [
+        1152,
+        1520
+      ],
+      "id": "aebbf4d5-802e-48cb-b060-a3dc6946eb4c",
+      "name": "Append log success",
+      "credentials": {
+        "sshPrivateKey": {
+          "id": "xm2ZPfPGfUHMrRyL",
+          "name": "SSH Vagrant"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const st = $('State').first().json;\nconst code = $json.code ?? 0;\nconst stderr = ($json.stderr || '').trim();\nconst m = stderr.match(/\\b(LOCK_BUSY|SRC_NOT_ARRAY_OR_BAD_JSON|SRC_MISSING|JQ_ITER_FAILED|TMP_EMPTY)\\b/);\nreturn [{\n  json: {\n    ts: new Date().toISOString(),\n    stage: 'build',\n    event: code === 0 ? 'success' : 'error',\n    code,\n    tag: m ? m[0] : 'UNKNOWN',\n    stderr: stderr.slice(0, 800),\n    logPath: st.logPath\n  }\n}];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2224,
+        1536
+      ],
+      "id": "cf9cd992-2a26-43b3-a3b7-bc01c3f9b1e2",
+      "name": "Log"
+    },
+    {
+      "parameters": {
+        "authentication": "privateKey",
+        "command": "=bash -lc 'jq -c -n \\\n  --arg ts \"{{$json.ts}}\" \\\n  --arg stage \"{{$json.stage}}\" \\\n  --arg event \"{{$json.event}}\" \\\n  --argjson code {{$json.code || 0}} \\\n  --arg tag \"{{$json.tag}}\" \\\n  --arg stderr \"{{$json.stderr}}\" \\\n  \"{\\\"ts\\\":\\$ts,\\\"stage\\\":\\$stage,\\\"event\\\":\\$event,\\\"code\\\":\\$code,\\\"tag\\\":\\$tag,\\\"stderr\\\":\\$stderr}\" \\\n  >> \"{{$json.logPath}}\"'\n"
+      },
+      "type": "n8n-nodes-base.ssh",
+      "typeVersion": 1,
+      "position": [
+        2384,
+        1536
+      ],
+      "id": "08827ce4-cca0-4d5d-adf5-93bf3ca4fcbf",
+      "name": "Append log",
+      "credentials": {
+        "sshPrivateKey": {
+          "id": "xm2ZPfPGfUHMrRyL",
+          "name": "SSH Vagrant"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "15736deb-ee8c-4bd5-bd4f-0a42d741e657",
+              "name": "ddlAttempt",
+              "value": 0,
+              "type": "number"
+            },
+            {
+              "id": "4954ddfa-0464-40d0-bbb7-e5bf2b66eaf2",
+              "name": "ddlMaxAttempt",
+              "value": 1,
+              "type": "number"
+            },
+            {
+              "id": "f67a66b5-8f11-4948-85f4-1af5b9cbd84c",
+              "name": "ddlBaseMs",
+              "value": 2000,
+              "type": "number"
+            },
+            {
+              "id": "6e426132-cf61-4223-b469-df399c2affe2",
+              "name": "ddlMaxMs",
+              "value": 20000,
+              "type": "number"
+            },
+            {
+              "id": "9686908a-27a0-4696-847f-924dc46fc3fb",
+              "name": "logPath",
+              "value": "={{$('State').first().json.logPath}}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        2848,
+        1536
+      ],
+      "id": "6e595d8d-aeaa-4918-b85d-80e4b6bd14ea",
+      "name": "Init DDL state"
+    },
+    {
+      "parameters": {
+        "jsCode": "return $input.all();"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        3024,
+        1536
+      ],
+      "id": "c8f9dfa5-a794-4991-ac77-44a4d78d5ef9",
+      "name": "DDL State"
+    },
+    {
+      "parameters": {
+        "jsCode": "const st = $('DDL State').first().json;\n\nconst attempt     = st.ddlAttempt ?? 0;\nconst maxAttempt  = st.ddlMaxAttempt ?? 4;\nconst base        = st.ddlBaseMs ?? 2000;\nconst maxMs       = st.ddlMaxMs ?? 20000;\n\nconst code   = $input.first().json.code ?? 0;\nconst out    = `${$input.first().json.stdout || ''}\\n${$input.first().json.stderr || ''}`;\n\n// Transient: admin down / not connected\nconst isTransient = /(Cannot connect to any admins|Lost connection to Admin|Failed to connect to kvstore|Not Connected)/i.test(out);\n\n// if (code === 0) {\nif (!isTransient) {\n  // OK: on passe à l'import\n  return [{ json: { ...st, ddlOk: true } }];\n}\n\nif (isTransient && attempt < maxAttempt) {\n  const next = attempt + 1;\n  const waitMs = Math.min(base * (2 ** (next - 1)), maxMs);\n  return [{\n    json: {\n      ...st,\n      ddlOk: false,\n      ddlAttempt: next,\n      waitMs,\n      ddlTag: 'ADMIN_CONN',\n      ddlMsg: out.slice(0, 600)\n    }\n  }];\n}\n\n// Final (non-transient OU max tentatives atteintes)\nreturn [{\n  json: {\n    ...st,\n    ddlOk: false,\n    final: true,\n    ddlTag: isTransient ? 'ADMIN_CONN_MAX' : 'DDL_ERROR',\n    ddlMsg: out.slice(0, 800)\n  }\n}];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        3360,
+        1536
+      ],
+      "id": "e06a53da-944f-41fe-9289-d0b1492dec72",
+      "name": "DDL Decide & Backoff"
+    },
+    {
+      "parameters": {
+        "authentication": "privateKey",
+        "command": "=bash -lc 'jq -c -n \\\n  --arg ts \"'\"{{$now}}\"'\" \\\n  --arg stage \"ddl\" \\\n  --arg event \"success\" \\\n  \"{\\\"ts\\\":\\$ts,\\\"stage\\\":\\$stage,\\\"event\\\":\\$event}\" \\\n  >> \"{{$json.logPath}}\"'\n"
+      },
+      "type": "n8n-nodes-base.ssh",
+      "typeVersion": 1,
+      "position": [
+        3712,
+        1520
+      ],
+      "id": "18b12765-68b7-4f25-9d2c-ab6431e38f37",
+      "name": "Log DDL success",
+      "credentials": {
+        "sshPrivateKey": {
+          "id": "xm2ZPfPGfUHMrRyL",
+          "name": "SSH Vagrant"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "4c27044e-dbb1-4123-a655-1366bf1cf0a5",
+              "leftValue": "={{ $json.final }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        3536,
+        1792
+      ],
+      "id": "1c6752e1-7daf-4f8c-bb8b-1f5cc3adff76",
+      "name": "If DDL final_error"
+    },
+    {
+      "parameters": {
+        "authentication": "privateKey",
+        "command": "=bash -lc '\ncat <<'\"'\"'EOF'\"'\"' | jq -c -Rrs \\\n  --arg ts \"{{$now}}\" \\\n  --arg stage \"ddl\" \\\n  --arg event \"error_final\" \\\n  --arg tag \"{{$json.ddlTag || \"\"}}\" \\\n  '\"'\"'{ts:$ts,stage:$stage,event:$event,tag:$tag,msg:.}'\"'\"' \\\n  >> \"{{$json.logPath}}\"\n{{$json.ddlMsg}}\nEOF\n'\n"
+      },
+      "type": "n8n-nodes-base.ssh",
+      "typeVersion": 1,
+      "position": [
+        3712,
+        1696
+      ],
+      "id": "2bb43541-84cb-465d-8de5-f56728466d7e",
+      "name": "Log DDL final_error",
+      "credentials": {
+        "sshPrivateKey": {
+          "id": "xm2ZPfPGfUHMrRyL",
+          "name": "SSH Vagrant"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "authentication": "privateKey",
+        "command": "=bash -lc 'jq -c -n \\\n  --arg ts \"'\"{{$now}}\"'\" \\\n  --arg stage \"ddl\" \\\n  --arg event \"retry\" \\\n  --argjson attempt {{$json.ddlAttempt || 0}} \\\n  --argjson waitMs {{$json.waitMs || 0}} \\\n  --arg tag \"{{$json.ddlTag || \"\"}}\" \\\n  \"{\\\"ts\\\":\\$ts,\\\"stage\\\":\\$stage,\\\"event\\\":\\$event,\\\"attempt\\\":\\$attempt,\\\"waitMs\\\":\\$waitMs,\\\"tag\\\":\\$tag}\" \\\n  >> \"{{$json.logPath}}\"'\n"
+      },
+      "type": "n8n-nodes-base.ssh",
+      "typeVersion": 1,
+      "position": [
+        3712,
+        1856
+      ],
+      "id": "8690bf92-c8d2-4ecf-abe3-de880a3e1f64",
+      "name": "Log DDL retry",
+      "credentials": {
+        "sshPrivateKey": {
+          "id": "xm2ZPfPGfUHMrRyL",
+          "name": "SSH Vagrant"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "5cf6515a-68fd-442a-a596-ad8abef73816",
+              "leftValue": "={{ $json.ddlOk }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        3520,
+        1536
+      ],
+      "id": "b0a824a6-fcd6-4b1a-b59a-513b56f446e9",
+      "name": "DDL ok ?"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "3d373e79-3998-49eb-9bc5-7acfbb130aa5",
+              "name": "impAttempt",
+              "value": 0,
+              "type": "number"
+            },
+            {
+              "id": "debd89bf-cf0e-4a99-9b7d-1db96a3ecc3c",
+              "name": "impMaxAttempt",
+              "value": 4,
+              "type": "number"
+            },
+            {
+              "id": "af4bf588-325b-410d-881e-44851097c00c",
+              "name": "impBaseMs",
+              "value": 3000,
+              "type": "number"
+            },
+            {
+              "id": "1791f495-62c1-4fa6-8fc4-105927df1e10",
+              "name": "impMaxMs",
+              "value": 25000,
+              "type": "number"
+            },
+            {
+              "id": "c287d03f-404f-4887-885b-f6223cc31849",
+              "name": "logPath",
+              "value": "={{$('State').first().json.logPath}}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        4016,
+        1520
+      ],
+      "id": "377ad4de-d74c-4826-bcdb-9cd3d887417b",
+      "name": "Import Init"
+    },
+    {
+      "parameters": {
+        "jsCode": "return $input.all();\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        4208,
+        1520
+      ],
+      "id": "fd45eb6b-1e68-4ea8-bacb-290a180c0019",
+      "name": "Import State"
+    },
+    {
+      "parameters": {
+        "authentication": "privateKey",
+        "command": "bash -lc '\nset -Eeuo pipefail\n\nFILE=/vagrant/nosql/wrapped_data_survey.jsonl\n\n# 0) Source OK (non vide)\nif [ ! -s \"$FILE\" ]; then\n  echo \"IMPORT_SRC_EMPTY:$FILE\" >&2\n  exit 80\nfi\n\n# 1) Import (session unique runadmin)\njava -jar /usr/local/kv/lib/kvstore.jar runadmin -host localhost -port 5000 <<EOF\nconnect store -name kvstore;\nput table -name surveys -file $FILE;\nEOF\n\n# 2) Marqueur de succès (rows planifiées = nb de lignes du JSONL)\necho \"DONE_ROWS=$(wc -l < \"$FILE\")\"\n'\n"
+      },
+      "type": "n8n-nodes-base.ssh",
+      "typeVersion": 1,
+      "position": [
+        4416,
+        1520
+      ],
+      "id": "91f61af0-8e25-441f-ae7a-9afa9f25314b",
+      "name": "Import",
+      "credentials": {
+        "sshPrivateKey": {
+          "id": "xm2ZPfPGfUHMrRyL",
+          "name": "SSH Vagrant"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const st = $('Import State').first().json;\n\nconst attempt     = st.impAttempt ?? 0;\nconst maxAttempt  = st.impMaxAttempt ?? 4;\nconst base        = st.impBaseMs ?? 3000;\nconst maxMs       = st.impMaxMs ?? 25000;\n\nconst code   = $input.first().json.code ?? 0;\nconst out    = `${$input.first().json.stdout || ''}\\n${$input.first().json.stderr || ''}`;\n\n// Erreurs transitoires (admin down / connexion)\nconst transientRe = /(Cannot connect to any admins|Lost connection to Admin|Failed to connect to kvstore|Not Connected)/i;\nconst isTransient = transientRe.test(out);\n\n// Erreurs “data/source”\nconst isSrcEmpty  = /IMPORT_SRC_EMPTY/i.test(out);\nconst isSchemaBad = /IMPORT_SCHEMA_BAD/i.test(out);\n\n// Succès\n// if (code === 0) {\nif(!isTransient) {\n  return [{ json: { ...st, impOk: true, impMsg: out.slice(0, 800) } }];\n}\n\n// Transient -> retry si possible\nif (isTransient && attempt < maxAttempt) {\n  const next = attempt + 1;\n  const waitMs = Math.min(base * (2 ** (next - 1)), maxMs);\n  return [{\n    json: {\n      ...st,\n      impOk: false,\n      impAttempt: next,\n      waitMs,\n      impTag: 'ADMIN_CONN',\n      impMsg: out.slice(0, 800)\n    }\n  }];\n}\n\n// Final (échec non-transient ou max atteint)\nreturn [{\n  json: {\n    ...st,\n    impOk: false,\n    final: true,\n    impTag: isTransient ? 'ADMIN_CONN_MAX'\n          : isSrcEmpty  ? 'IMPORT_SRC_EMPTY'\n          : isSchemaBad ? 'IMPORT_SCHEMA_BAD'\n          : 'IMPORT_ERROR',\n    impMsg: out.slice(0, 1200)\n  }\n}];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        4592,
+        1520
+      ],
+      "id": "acf0f153-12bf-4383-91d4-b823030d4e07",
+      "name": "Import Decide & Backoff"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "df76345c-f217-4b55-a2d6-424b99164023",
+              "leftValue": "={{ $json.impOk }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        4800,
+        1520
+      ],
+      "id": "79966e14-11e4-4abe-8f1a-49ccc01817cb",
+      "name": "Import OK?"
+    },
+    {
+      "parameters": {
+        "authentication": "privateKey",
+        "command": "=bash -lc 'jq -c -n \\\n  --arg ts \"'\"{{$now}}\"'\" \\\n  --arg stage \"import\" \\\n  --arg event \"success\" \\\n  --arg msg \"{{$json.impMsg}}\" \\\n  \"{\\\"ts\\\":\\$ts,\\\"stage\\\":\\$stage,\\\"event\\\":\\$event,\\\"msg\\\":\\$msg}\" \\\n  >> \"{{$('State').first().json.logPath}}\"'\n"
+      },
+      "type": "n8n-nodes-base.ssh",
+      "typeVersion": 1,
+      "position": [
+        5008,
+        1424
+      ],
+      "id": "e404aed5-0616-4d39-b71c-62aa18ba1f9f",
+      "name": "Log import success",
+      "credentials": {
+        "sshPrivateKey": {
+          "id": "xm2ZPfPGfUHMrRyL",
+          "name": "SSH Vagrant"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "db7d3a93-7db6-42e4-be6b-e00246d31a8f",
+              "leftValue": "={{ $json.final }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        4832,
+        1792
+      ],
+      "id": "1300ee2a-5567-403b-900f-2df11f91c08d",
+      "name": "Final?1"
+    },
+    {
+      "parameters": {
+        "authentication": "privateKey",
+        "command": "=bash -lc '\ncat <<'\"'\"'EOF'\"'\"' | jq -c -Rrs \\\n  --arg ts \"'\"{{$now}}\"'\" \\\n  --arg stage \"import\" \\\n  --arg event \"error_final\" \\\n  --arg tag \"{{$json.impTag}}\" \\\n  --arg msg \"{{$json.impMsg}}\" \\\n'\"'\"'{ts:$ts,stage:$stage,event:$event,tag:$tag,msg:.}'\"'\"' \\\n   >> \"{{$json.logPath}}\"\n{{$json.impMsg}}\nEOF\n'"
+      },
+      "type": "n8n-nodes-base.ssh",
+      "typeVersion": 1,
+      "position": [
+        5008,
+        1712
+      ],
+      "id": "b7ae6ab5-6b35-40bc-8a3b-e42f3719fec1",
+      "name": "Log import final_error",
+      "credentials": {
+        "sshPrivateKey": {
+          "id": "xm2ZPfPGfUHMrRyL",
+          "name": "SSH Vagrant"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "authentication": "privateKey",
+        "command": "=bash -lc 'jq -c -n \\   --arg ts \"'\"{{$now}}\"'\" \\   --arg stage \"import\" \\   --arg event \"retry\" \\   --argjson attempt {{$json.impAttempt || 0}} \\   --argjson waitMs {{$json.waitMs || 0}} \\   --arg tag \"{{$json.impTag || \"\"}}\" \\   --arg msg \"{{$json.impMsg || \"\"}}\" \\   \"{\\\"ts\\\":\\$ts,\\\"stage\\\":\\$stage,\\\"event\\\":\\$event,\\\"attempt\\\":\\$attempt,\\\"waitMs\\\":\\$waitMs,\\\"tag\\\":\\$tag,\\\"msg\\\":\\$msg}\" \\   >> \"{{$('State').first().json.logPath}}\"'"
+      },
+      "type": "n8n-nodes-base.ssh",
+      "typeVersion": 1,
+      "position": [
+        5008,
+        1888
+      ],
+      "id": "ee3668fd-11d4-46ad-8226-0365119a2a3d",
+      "name": "Log import retry",
+      "credentials": {
+        "sshPrivateKey": {
+          "id": "xm2ZPfPGfUHMrRyL",
+          "name": "SSH Vagrant"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "throw new Error('Import failed (final)')"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        5152,
+        1712
+      ],
+      "id": "a6f85078-d93f-41ec-80b9-6a704d0f8817",
+      "name": "Throw Import error"
+    },
+    {
+      "parameters": {
+        "amount": "={{$json.waitMs/1000;}}"
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        4560,
+        1808
+      ],
+      "id": "ed79e330-16c0-4477-bc63-e74e80c4fd3e",
+      "name": "Wait",
+      "webhookId": "35f595f1-4bf6-40b7-bd11-4f0af97470b1"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "74030ae9-1eb0-4f7a-ac7c-ef69670e9d54",
+              "name": "logPath",
+              "value": "=/vagrant/logs/survey_workflow.jsonl",
+              "type": "string"
+            },
+            {
+              "id": "1cffab36-76b7-4bdf-b4da-7ea3332a7f5c",
+              "name": "post1Path",
+              "value": "/vagrant/mapreducesurvey/./run_surveys_pipeline.sh",
+              "type": "string"
+            },
+            {
+              "id": "024af5b9-0b1b-4f74-96c9-5cdf26da8e45",
+              "name": "post1Args",
+              "value": "",
+              "type": "string"
+            },
+            {
+              "id": "50425b59-cb7c-483d-b010-84ab9e8c83a6",
+              "name": "post2Path",
+              "value": "/vagrant/mapreducesurvey/./run_surveys_pipeline_2.sh",
+              "type": "string"
+            },
+            {
+              "id": "877141f5-68f4-4529-a203-f99be7cc5513",
+              "name": "post2Args",
+              "value": "",
+              "type": "string"
+            },
+            {
+              "id": "81a32be8-065d-46a5-ac5e-a54fa04965ba",
+              "name": "httpHost",
+              "value": "host.docker.internal",
+              "type": "string"
+            },
+            {
+              "id": "714607a1-6e0f-4143-95eb-88dfb194c959",
+              "name": "httpPort",
+              "value": "8000",
+              "type": "string"
+            },
+            {
+              "id": "5b261f04-df04-4acd-a56e-7f6afa71fd4f",
+              "name": "httpPath",
+              "value": "/v1/surveys_milvus",
+              "type": "string"
+            },
+            {
+              "id": "5ba20761-d069-4287-ba29-e61006421bcd",
+              "name": "softFailPost",
+              "value": false,
+              "type": "boolean"
+            },
+            {
+              "id": "5684ca7d-50f8-4262-8afe-17f4a05210ac",
+              "name": "softFailHTTP",
+              "value": true,
+              "type": "boolean"
+            },
+            {
+              "id": "9f62e98e-a760-4ad9-89ee-e7ffe8e3506f",
+              "name": "softFailPost2",
+              "value": false,
+              "type": "boolean"
+            },
+            {
+              "id": "5cbabfe4-3b35-44a2-bd00-bb4a43d306ec",
+              "name": "baseMs",
+              "value": 2000,
+              "type": "number"
+            },
+            {
+              "id": "34b4feb7-ddf2-4288-80c2-9118231a896e",
+              "name": "maxMs",
+              "value": 20000,
+              "type": "number"
+            },
+            {
+              "id": "9a606cad-ef3d-4b73-bbc4-23b8e390565a",
+              "name": "maxAttempt",
+              "value": 2,
+              "type": "number"
+            },
+            {
+              "id": "9e9ee060-d7b0-48f5-aa6c-2f07bf0876f1",
+              "name": "attempt",
+              "value": 0,
+              "type": "number"
+            },
+            {
+              "id": "2c6ec54a-4db6-49b3-a3d0-f1f457fb959a",
+              "name": "next",
+              "value": "post1",
+              "type": "string"
+            },
+            {
+              "id": "fd32e52a-ea0a-4467-9062-7727f33cc96b",
+              "name": "",
+              "value": "",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        5728,
+        1200
+      ],
+      "id": "c18329df-8ed5-4d94-bee2-54cd29615623",
+      "name": "Post Init"
+    },
+    {
+      "parameters": {
+        "jsCode": "return $input.all();"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        6400,
+        1168
+      ],
+      "id": "e8772de7-c89b-4af3-9e69-8693b56b4b3d",
+      "name": "Post State"
+    },
+    {
+      "parameters": {
+        "authentication": "privateKey",
+        "command": "={{$('Post State').first().json.post1Path}}"
+      },
+      "type": "n8n-nodes-base.ssh",
+      "typeVersion": 1,
+      "position": [
+        5504,
+        1584
+      ],
+      "id": "1a1ef17e-2f4d-40af-a1ee-c8889ba404f7",
+      "name": "SSH Post1",
+      "credentials": {
+        "sshPrivateKey": {
+          "id": "xm2ZPfPGfUHMrRyL",
+          "name": "SSH Vagrant"
+        }
+      },
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "jsCode": "const st = $('Post State').first().json;\nconst stage = 'post1';\nconst attempt = st.attempt ?? 0;\nconst maxA = st.maxAttempt ?? 4;\nconst base = st.baseMs ?? 2000;\nconst maxMs = st.maxMs ?? 20000;\n\nconst code = $input.first().json.code ?? 0;\nconst out = `${$input.first().json.stdout || ''}\\n${$input.first().json.stderr || ''}`.trim();\nconst isBlank = (s) => s == null || s.trim() === \"\";\nconst stderr = $input.first().json.stderr;\nconst infoWarn = /\\bWARN\\b|INFO SparkContext: Running Spark|\\bINFO\\b/.test(stderr);\nconst hasRealError = /\\b(FATAL|Exception|Traceback|Caused by:|No such file|Permission denied|command not found)\\b/i.test(stderr);\nconst hasErr = !isBlank(stderr);\nconst ok = (infoWarn && !hasRealError);\n\n// Connexion SSH transitoire ?\nconst isTransient = /(Connection timed out|Connection refused|No route to host|Permission denied \\(publickey|kex_exchange_identification|Temporary failure)/i.test(out);\n\n// Success\n// if (code === 0) {\nif((!hasErr&&hasRealError) || ok) {\n  return [{ json: { ...st, attempt: 0, stage, ok: true, msg: out.slice(0,600), next: 'http' } }];\n}\n\n// Retry si transitoire et tentative dispo\nif ((hasErr&&hasRealError) && !ok && attempt < maxA) {\n  const next = attempt + 1;\n  const waitMs = Math.min(base * (2 ** (next - 1)), maxMs);\n  return [{ json: { ...st, attempt: next, stage, ok: false, waitMs, tag: 'SSH_TRANSIENT', msg: out.slice(0,600), next: 'post1' } }];\n}\n\n// Final\nreturn [{ json: { ...st, stage, ok: false, final: true, tag: 'SSH_ERROR', msg: out.slice(0,800), next: null } }];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        5696,
+        1584
+      ],
+      "id": "f178a6fa-1978-4eaa-96df-ed5cd8cbc92c",
+      "name": "Post1 Decide & Backoff"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "85a59678-a011-4285-9925-9a73f1dba57d",
+              "leftValue": "={{ $json.ok }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        5856,
+        1536
+      ],
+      "id": "c6bc7a7a-6055-43de-8b6c-be1c736daa48",
+      "name": "Post1 OK?"
+    },
+    {
+      "parameters": {
+        "authentication": "privateKey",
+        "command": "=bash -lc '\ncat <<'\"'\"'EOF'\"'\"' | jq -c -Rrs \\\n  --arg ts \"'\"{{$now}}\"'\" \\\n  --arg stage \"post1\" \\\n  --arg event \"success\" \\\n  '\"'\"'{ts:$ts,stage:$stage,event:$event,msg:.}'\"'\"' \\\n  >> \"{{$('Post State').first().json.logPath}}\"\n{{$json.msg}}\nEOF\n'"
+      },
+      "type": "n8n-nodes-base.ssh",
+      "typeVersion": 1,
+      "position": [
+        6096,
+        1520
+      ],
+      "id": "7f6d2bf8-d4c2-4a8e-8a2e-6b580139f552",
+      "name": "Log post1 success",
+      "credentials": {
+        "sshPrivateKey": {
+          "id": "xm2ZPfPGfUHMrRyL",
+          "name": "SSH Vagrant"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "authentication": "privateKey",
+        "command": "=bash -lc '\ncat <<'\"'\"'EOF'\"'\"' | jq -c -Rrs \\\n  --arg ts \"'\"{{$now}}\"'\" \\\n  --arg stage \"post1\" \\\n  --arg event \"error_final\" \\\n  --arg tag \"{{$json.tag}}\" \\\n  '\"'\"'{ts:$ts,stage:$stage,event:$event,tag:$tag,msg:.}'\"'\"' \\\n  >> \"{{$('Post State').first().json.logPath}}\"\n{{$json.msg}}\nEOF\n'\n"
+      },
+      "type": "n8n-nodes-base.ssh",
+      "typeVersion": 1,
+      "position": [
+        6224,
+        1712
+      ],
+      "id": "98ed7086-ca25-4f4e-9e73-cc9b31dc9526",
+      "name": "Log post1 error_final",
+      "credentials": {
+        "sshPrivateKey": {
+          "id": "xm2ZPfPGfUHMrRyL",
+          "name": "SSH Vagrant"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "if($('Final post ?').first().json.softFailPost){ \n  throw new Error('Post1 failed')\n}"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        6368,
+        1712
+      ],
+      "id": "985d1906-f552-4cb4-aefb-5c32213774e8",
+      "name": "Throw FailPost1"
+    },
+    {
+      "parameters": {
+        "authentication": "privateKey",
+        "command": "=bash -lc '\ncat <<'\"'\"'EOF'\"'\"' | jq -c -Rrs \\\n  --arg ts \"'\"{{$now}}\"'\" \\\n  --arg stage \"post1\" \\\n  --arg event \"retry\" \\\n  --argjson attempt {{$('Post State').first().json.attempt || 0}} \\\n  --argjson waitMs {{$json.waitMs || 0}} \\\n  --arg tag \"{{$json.tag || \"\"}}\" \\\n  '\"'\"'{ts:$ts,stage:$stage,event:$event,attempt:$attempt,waitMs:$waitMs,tag:$tag,msg:.}'\"'\"' \\\n  >> \"{{$('Post State').first().json.logPath}}\"\n{{$json.msg}}\nEOF\n'\n"
+      },
+      "type": "n8n-nodes-base.ssh",
+      "typeVersion": 1,
+      "position": [
+        6224,
+        1888
+      ],
+      "id": "27c8ef41-4156-47aa-902b-e7d5c4fe9207",
+      "name": "Log post1 retry",
+      "alwaysOutputData": false,
+      "credentials": {
+        "sshPrivateKey": {
+          "id": "xm2ZPfPGfUHMrRyL",
+          "name": "SSH Vagrant"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "amount": "={{$json.waitMs/1000;}}"
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        5488,
+        1808
+      ],
+      "id": "0935f602-4d11-46bb-a5b1-fb65c6a9c895",
+      "name": "Wait1",
+      "webhookId": "35f595f1-4bf6-40b7-bd11-4f0af97470b1"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        5760,
+        1808
+      ],
+      "id": "44cfbda6-598b-444e-b77c-b5c9710be9d9",
+      "name": "Merge"
+    },
+    {
+      "parameters": {
+        "amount": "={{$json.waitMs/1000;}}"
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        6704,
+        1728
+      ],
+      "id": "5d29c562-3b8f-44b9-98a6-b13593528497",
+      "name": "Wait2",
+      "webhookId": "35f595f1-4bf6-40b7-bd11-4f0af97470b1"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        6992,
+        1696
+      ],
+      "id": "6ee47cbf-88a4-4710-97b4-d81bde454dec",
+      "name": "Merge1"
+    },
+    {
+      "parameters": {
+        "method": "=POST",
+        "url": "={{ 'http://'+ $(  'Post State').first().json.httpHost + ':' + $(  'Post State').first().json.httpPort + $(  'Post State').first().json.httpPath }}",
+        "options": {
+          "timeout": 3600000
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        6704,
+        1520
+      ],
+      "id": "777313dd-7bd6-421d-97f3-2947a0a08ceb",
+      "name": "HTTP Post",
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "jsCode": "const st = $('Post State').first().json;\nconst stage = 'post_http';\nconst attempt = st.attempt ?? 0;\nconst maxA = st.maxAttempt ?? 4;\nconst base = st.baseMs ?? 2000;\nconst maxMs = st.maxMs ?? 20000;\n\nconst inItem = $input.first().json;\nconst status = inItem.statusCode ?? inItem.status ?? 0;\nconst isJsonErr = !!(inItem && inItem.error);\nconst code = inItem.code;\nconst ok = (code >= 200 && code < 300) && !isJsonErr;\n\n// Success\nif (ok) return [{ json: { ...st, attempt: 0, stage, ok: true, status, next: 'delete' } }];\n\n// Retry ?\nif (attempt < maxA) {\n  const next = attempt + 1;\n  const waitMs = Math.min(base * (2 ** (next - 1)), maxMs);\n  return [{ json: { ...st, attempt: next, stage, ok: false, waitMs, tag: `HTTP_${status||'ERR'}`, next: 'http' } }];\n}\n\n// Final\nreturn [{ json: { ...st, stage, ok: false, final: true, tag: `HTTP_${status||'ERR'}`, next: null } }];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        6960,
+        1520
+      ],
+      "id": "e51dc6f5-d89c-4e4a-8b62-d1db5731cbe8",
+      "name": "HTTP Decide & Backoff"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "85a59678-a011-4285-9925-9a73f1dba57d",
+              "leftValue": "={{ $json.ok }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        7152,
+        1520
+      ],
+      "id": "9cb0b088-404f-4f6e-9318-076c1d02cfd3",
+      "name": "HTTP OK?"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "d51b3d2e-bbfa-4134-8b44-5fb546697a68",
+              "leftValue": "={{ $json.final }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        7200,
+        1712
+      ],
+      "id": "889b78f0-3df2-4662-9d35-d5d651ae93cc",
+      "name": "HTTP final"
+    },
+    {
+      "parameters": {
+        "jsCode": "if($('HTTP final').first().json.softFailHTTP){ \n  throw new Error('HTTP app failed')\n}"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        7584,
+        1632
+      ],
+      "id": "11680ed8-de2a-48d5-a46e-c882202f5cfb",
+      "name": "Throw FailHttp"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "d51b3d2e-bbfa-4134-8b44-5fb546697a68",
+              "leftValue": "={{ $json.final }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        6000,
+        1792
+      ],
+      "id": "9b0c1037-9d50-4ceb-944a-3c56aa4e0048",
+      "name": "Final post ?"
+    },
+    {
+      "parameters": {
+        "authentication": "privateKey",
+        "command": "=bash -lc '\ncat <<'\"'\"'EOF'\"'\"' | jq -c -Rrs \\\n  --arg ts \"'\"{{$now}}\"'\" \\\n  --arg stage \"post1\" \\\n  --arg event \"retry\" \\\n  --argjson attempt {{$('Post State').first().json.attempt || 0}} \\\n  --argjson waitMs {{$json.waitMs || 0}} \\\n  --arg tag \"{{$json.tag || \"\"}}\" \\\n  '\"'\"'{ts:$ts,stage:$stage,event:$event,attempt:$attempt,waitMs:$waitMs,tag:$tag,msg:.}'\"'\"' \\\n  >> \"{{$('Post State').first().json.logPath}}\"\n{{$json.msg}}\nEOF\n'\n"
+      },
+      "type": "n8n-nodes-base.ssh",
+      "typeVersion": 1,
+      "position": [
+        7440,
+        1808
+      ],
+      "id": "30a2a750-60ed-408a-8d22-0ffa8842b2f4",
+      "name": "Log http retry",
+      "alwaysOutputData": false,
+      "credentials": {
+        "sshPrivateKey": {
+          "id": "xm2ZPfPGfUHMrRyL",
+          "name": "SSH Vagrant"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "authentication": "privateKey",
+        "command": "=bash -lc '\ncat <<'\"'\"'EOF'\"'\"' | jq -c -Rrs \\\n  --arg ts \"'\"{{$now}}\"'\" \\\n  --arg stage \"post1\" \\\n  --arg event \"success\" \\\n  '\"'\"'{ts:$ts,stage:$stage,event:$event,msg:.}'\"'\"' \\\n  >> \"{{$('Post State').first().json.logPath}}\"\n{{$json.msg}}\nEOF\n'"
+      },
+      "type": "n8n-nodes-base.ssh",
+      "typeVersion": 1,
+      "position": [
+        7328,
+        1488
+      ],
+      "id": "48f72296-88ac-49c4-838a-3b0f0c154a5d",
+      "name": "Log http success",
+      "credentials": {
+        "sshPrivateKey": {
+          "id": "xm2ZPfPGfUHMrRyL",
+          "name": "SSH Vagrant"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "authentication": "privateKey",
+        "command": "=bash -lc '\ncat <<'\"'\"'EOF'\"'\"' | jq -c -Rrs \\\n  --arg ts \"'\"{{$now}}\"'\" \\\n  --arg stage \"post1\" \\\n  --arg event \"error_final\" \\\n  --arg tag \"{{$json.tag}}\" \\\n  '\"'\"'{ts:$ts,stage:$stage,event:$event,tag:$tag,msg:.}'\"'\"' \\\n  >> \"{{$('Post State').first().json.logPath}}\"\n{{$json.msg}}\nEOF\n'\n"
+      },
+      "type": "n8n-nodes-base.ssh",
+      "typeVersion": 1,
+      "position": [
+        7440,
+        1632
+      ],
+      "id": "1e76df6a-4a55-40f2-9b82-01265bc2e70c",
+      "name": "Log http error_final",
+      "credentials": {
+        "sshPrivateKey": {
+          "id": "xm2ZPfPGfUHMrRyL",
+          "name": "SSH Vagrant"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "if($('Final post2 ?').first().json.softFailPost2){ \n  throw new Error('Post2 failed')\n}"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        8704,
+        1616
+      ],
+      "id": "555aeed5-5a63-4be0-9146-33bc6bad42a1",
+      "name": "Throw FailPost"
+    },
+    {
+      "parameters": {
+        "amount": "={{$json.waitMs/1000;}}"
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        7824,
+        1712
+      ],
+      "id": "389fb43a-f4d2-47b6-83b3-dacf68cb989b",
+      "name": "Wait3",
+      "webhookId": "35f595f1-4bf6-40b7-bd11-4f0af97470b1"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        8096,
+        1712
+      ],
+      "id": "72473d50-fed1-4d36-9063-50085adc52e7",
+      "name": "Merge2"
+    },
+    {
+      "parameters": {
+        "authentication": "privateKey",
+        "command": "={{$('Post State').first().json.post2Path}}"
+      },
+      "type": "n8n-nodes-base.ssh",
+      "typeVersion": 1,
+      "position": [
+        7808,
+        1472
+      ],
+      "id": "36bda8db-6603-4fb7-a78f-c8c541a8c089",
+      "name": "SSH Post2",
+      "credentials": {
+        "sshPrivateKey": {
+          "id": "xm2ZPfPGfUHMrRyL",
+          "name": "SSH Vagrant"
+        }
+      },
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "jsCode": "const st = $('Post State').first().json;\nconst stage = 'post2';\nconst attempt = st.attempt ?? 0;\nconst maxA = st.maxAttempt ?? 4;\nconst base = st.baseMs ?? 2000;\nconst maxMs = st.maxMs ?? 20000;\n\nconst code = $input.first().json.code ?? 0;\nconst out = `${$input.first().json.stdout || ''}\\n${$input.first().json.stderr || ''}`.trim();\nconst isTransient = /(Connection timed out|Connection refused|No route to host|Permission denied \\(publickey|kex_exchange_identification|Temporary failure)/i.test(out);\nconst isBlank = (s) => s == null || s.trim() === \"\";\nconst stderr = $input.first().json.stderr;\nconst hasErr = !isBlank(stderr);\nconst infoWarn = /\\bWARN\\b|INFO SparkContext: Running Spark|\\bINFO\\b/.test(stderr);\nconst hasRealError = /\\b(FATAL|Exception|Traceback|Caused by:|No such file|Permission denied|command not found)\\b/i.test(stderr);\nconst ok = (infoWarn && !hasRealError);\n\nif((!hasErr&&hasRealError) || ok) return [{ json: { ...st, attempt: 0, stage, ok: true, msg: out.slice(0,600), next: null } }];\n\nif ((hasErr&&hasRealError) && !ok && attempt < maxA) {\n  const next = attempt + 1;\n  const waitMs = Math.min(base * (2 ** (next - 1)), maxMs);\n  return [{ json: { ...st, attempt: next, stage, ok: false, waitMs, tag: 'SSH_TRANSIENT', msg: out.slice(0,600), next: 'post2' } }];\n}\n\nreturn [{ json: { ...st, stage, ok: false, final: true, tag: 'SSH_ERROR', msg: out.slice(0,800), next: null } }];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        7984,
+        1472
+      ],
+      "id": "3f05bc2a-bfd9-4aab-9d86-64517daf3621",
+      "name": "Post2 Decide & Backoff"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "85a59678-a011-4285-9925-9a73f1dba57d",
+              "leftValue": "={{ $json.ok }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        8144,
+        1472
+      ],
+      "id": "5436afb7-34fa-4c0c-9124-eacdb99bf78c",
+      "name": "Post2 OK?"
+    },
+    {
+      "parameters": {
+        "authentication": "privateKey",
+        "command": "=bash -lc '\ncat <<'\"'\"'EOF'\"'\"' | jq -c -Rrs \\\n  --arg ts \"'\"{{$now}}\"'\" \\\n  --arg stage \"post2\" \\\n  --arg event \"success\" \\\n  '\"'\"'{ts:$ts,stage:$stage,event:$event,msg:.}'\"'\"' \\\n  >> \"{{$('Post State').first().json.logPath}}\"\n{{$json.msg}}\nEOF\n'"
+      },
+      "type": "n8n-nodes-base.ssh",
+      "typeVersion": 1,
+      "position": [
+        8384,
+        1456
+      ],
+      "id": "272ec0f8-624b-48e6-9c81-464e50d65a25",
+      "name": "Log post2 success",
+      "credentials": {
+        "sshPrivateKey": {
+          "id": "xm2ZPfPGfUHMrRyL",
+          "name": "SSH Vagrant"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "d51b3d2e-bbfa-4134-8b44-5fb546697a68",
+              "leftValue": "={{ $json.final }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        8336,
+        1696
+      ],
+      "id": "d05b6bd2-739a-43de-a543-1c7a073d7028",
+      "name": "Final post2 ?"
+    },
+    {
+      "parameters": {
+        "authentication": "privateKey",
+        "command": "=bash -lc '\ncat <<'\"'\"'EOF'\"'\"' | jq -c -Rrs \\\n  --arg ts \"'\"{{$now}}\"'\" \\\n  --arg stage \"post2\" \\\n  --arg event \"error_final\" \\\n  --arg tag \"{{$json.tag}}\" \\\n  '\"'\"'{ts:$ts,stage:$stage,event:$event,tag:$tag,msg:.}'\"'\"' \\\n  >> \"{{$('Post State').first().json.logPath}}\"\n{{$json.msg}}\nEOF\n'\n"
+      },
+      "type": "n8n-nodes-base.ssh",
+      "typeVersion": 1,
+      "position": [
+        8560,
+        1616
+      ],
+      "id": "8abaf87d-5f5a-4961-b234-536aec64d8d5",
+      "name": "Log post2 error_final",
+      "credentials": {
+        "sshPrivateKey": {
+          "id": "xm2ZPfPGfUHMrRyL",
+          "name": "SSH Vagrant"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "authentication": "privateKey",
+        "command": "=bash -lc '\ncat <<'\"'\"'EOF'\"'\"' | jq -c -Rrs \\\n  --arg ts \"'\"{{$now}}\"'\" \\\n  --arg stage \"post2\" \\\n  --arg event \"retry\" \\\n  --argjson attempt {{$('Post State').first().json.attempt || 0}} \\\n  --argjson waitMs {{$json.waitMs || 0}} \\\n  --arg tag \"{{$json.tag || \"\"}}\" \\\n  '\"'\"'{ts:$ts,stage:$stage,event:$event,attempt:$attempt,waitMs:$waitMs,tag:$tag,msg:.}'\"'\"' \\\n  >> \"{{$('Post State').first().json.logPath}}\"\n{{$json.msg}}\nEOF\n'\n"
+      },
+      "type": "n8n-nodes-base.ssh",
+      "typeVersion": 1,
+      "position": [
+        8560,
+        1792
+      ],
+      "id": "7cbc76a3-6532-4002-9066-c1cb56b402cf",
+      "name": "Log post2 retry",
+      "alwaysOutputData": false,
+      "credentials": {
+        "sshPrivateKey": {
+          "id": "xm2ZPfPGfUHMrRyL",
+          "name": "SSH Vagrant"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{$json.next}}",
+                    "rightValue": "post1",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "d74535b0-6853-40a8-a431-a5cb26ef7271"
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "0878b917-a106-49ec-8977-4094290d410b",
+                    "leftValue": "={{$json.next}}",
+                    "rightValue": "http",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "f5fd29de-bcc5-4b38-abbb-cc0fcbf663e7",
+                    "leftValue": "={{$json.next}}",
+                    "rightValue": "delete",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "4f69db5b-edc1-458a-9049-98048a9fbdf3",
+                    "leftValue": "={{$json.next}}",
+                    "rightValue": "post2",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        6768,
+        1152
+      ],
+      "id": "ac1a65d3-e3c8-4bc0-a882-97bb4a116ea8",
+      "name": "Switch"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        6288,
+        1472
+      ],
+      "id": "26c7aecc-0bbc-4caf-831f-f725b65a3d42",
+      "name": "Merge3"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        7520,
+        1440
+      ],
+      "id": "16563842-96b8-4791-b7c3-7d748d4a9b1c",
+      "name": "Merge4"
+    },
+    {
+      "parameters": {
+        "url": "=https://api.mwater.co/v3/forms?client=84f4408e07a5ff80b574ac20d4eade1e&filter={\"ownedBy\": \"259a4cb9eec34f298da7f84d0009c5fd\"}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        512,
+        1536
+      ],
+      "id": "10168fa6-86fc-4e84-8236-d3178b252680",
+      "name": "HTTP Request1",
+      "executeOnce": false,
+      "retryOnFail": true,
+      "alwaysOutputData": false,
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "operation": "write",
+        "fileName": "/mnt/data/nosql/tmp_survey.json",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.readWriteFile",
+      "typeVersion": 1,
+      "position": [
+        1824,
+        1536
+      ],
+      "id": "31f7bed1-9492-4a66-950a-f2ded7d06993",
+      "name": "write data1"
+    },
+    {
+      "parameters": {
+        "jsCode": "return $('HTTP Request1').all().map(item => {\n  return {\n    json: {\n      id: item.json._id,\n      rev: item.json._rev,\n      doc: item.json\n    }\n  };\n});\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1456,
+        1536
+      ],
+      "id": "fdcb218e-078e-4c9c-b194-499135a89a19",
+      "name": "Create schema1"
+    },
+    {
+      "parameters": {
+        "authentication": "privateKey",
+        "command": "bash -lc '\nset -Eeuo pipefail\n\njava -jar /usr/local/kv/lib/kvstore.jar runadmin -host localhost -port 5000 <<'\"'\"'EOF'\"'\"'\nconnect store -name kvstore;\nexecute '\\''drop table surveys'\\'';\nexecute \"CREATE TABLE IF NOT EXISTS surveys (\n  id  STRING,\n  rev INTEGER,\n  doc JSON,\n  PRIMARY KEY (id)\n)\";\nexecute \"CREATE INDEX IF NOT EXISTS ix_surveys_rev ON surveys(rev)\";\nshow tables;\ndescribe table -name surveys;\nEOF\n'\n"
+      },
+      "type": "n8n-nodes-base.ssh",
+      "typeVersion": 1,
+      "position": [
+        3168,
+        1536
+      ],
+      "id": "ab7b1231-32b6-406b-b9c9-a1ce03ebdd8e",
+      "name": "Ensure table document NOSQL",
+      "credentials": {
+        "sshPrivateKey": {
+          "id": "xm2ZPfPGfUHMrRyL",
+          "name": "SSH Vagrant"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "amount": "={{$json.waitMs/1000;}}"
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        7392,
+        1072
+      ],
+      "id": "2834196e-3b0e-4a14-8567-eb2ab5838120",
+      "name": "Wait4",
+      "webhookId": "35f595f1-4bf6-40b7-bd11-4f0af97470b1"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        7696,
+        1056
+      ],
+      "id": "1b4dcc16-ba58-4fe2-9af6-5eb12bbea3ab",
+      "name": "Merge5"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "85a59678-a011-4285-9925-9a73f1dba57d",
+              "leftValue": "={{ $json.ok }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        7856,
+        880
+      ],
+      "id": "af510029-528c-4624-a18f-64a128f96e16",
+      "name": "HTTP OK?1"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "d51b3d2e-bbfa-4134-8b44-5fb546697a68",
+              "leftValue": "={{ $json.final }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        7904,
+        1072
+      ],
+      "id": "a8df7dc7-815d-4592-8dd5-92958ccd890a",
+      "name": "HTTP final1"
+    },
+    {
+      "parameters": {
+        "jsCode": "if($('HTTP final1').first().json.softFailHTTP){ \n  throw new Error('HTTP app failed')\n}"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        8288,
+        992
+      ],
+      "id": "edd80562-36ee-48e1-a69b-109ef070a543",
+      "name": "Throw FailHttp1"
+    },
+    {
+      "parameters": {
+        "authentication": "privateKey",
+        "command": "=bash -lc '\ncat <<'\"'\"'EOF'\"'\"' | jq -c -Rrs \\\n  --arg ts \"'\"{{$now}}\"'\" \\\n  --arg stage \"post1\" \\\n  --arg event \"retry\" \\\n  --argjson attempt {{$('Post State').first().json.attempt || 0}} \\\n  --argjson waitMs {{$json.waitMs || 0}} \\\n  --arg tag \"{{$json.tag || \"\"}}\" \\\n  '\"'\"'{ts:$ts,stage:$stage,event:$event,attempt:$attempt,waitMs:$waitMs,tag:$tag,msg:.}'\"'\"' \\\n  >> \"{{$('Post State').first().json.logPath}}\"\n{{$json.msg}}\nEOF\n'\n"
+      },
+      "type": "n8n-nodes-base.ssh",
+      "typeVersion": 1,
+      "position": [
+        8160,
+        1136
+      ],
+      "id": "248687ca-2990-4809-bc49-0b63451f4584",
+      "name": "Log http retry1",
+      "alwaysOutputData": false,
+      "credentials": {
+        "sshPrivateKey": {
+          "id": "xm2ZPfPGfUHMrRyL",
+          "name": "SSH Vagrant"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "authentication": "privateKey",
+        "command": "=bash -lc '\ncat <<'\"'\"'EOF'\"'\"' | jq -c -Rrs \\\n  --arg ts \"'\"{{$now}}\"'\" \\\n  --arg stage \"delete\" \\\n  --arg event \"error_final\" \\\n  --arg tag \"{{$json.tag}}\" \\\n  '\"'\"'{ts:$ts,stage:$stage,event:$event,tag:$tag,msg:.}'\"'\"' \\\n  >> \"{{$('Post State').first().json.logPath}}\"\n{{$json.msg}}\nEOF\n'\n"
+      },
+      "type": "n8n-nodes-base.ssh",
+      "typeVersion": 1,
+      "position": [
+        8144,
+        992
+      ],
+      "id": "9c7100b1-0f5a-4932-9029-1a68a779db0d",
+      "name": "Log http error_final1",
+      "credentials": {
+        "sshPrivateKey": {
+          "id": "xm2ZPfPGfUHMrRyL",
+          "name": "SSH Vagrant"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        8208,
+        736
+      ],
+      "id": "dc3f4996-882f-4f87-9840-7a3c56ec26f4",
+      "name": "Merge6"
+    },
+    {
+      "parameters": {
+        "method": "=DELETE",
+        "url": "={{ 'http://'+ $(  'Post State').first().json.httpHost + ':' + $(  'Post State').first().json.httpPort + $(  'Post State').first().json.httpPath }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        7408,
+        880
+      ],
+      "id": "c8f0c56e-e095-4fa7-91a4-561c9cc127ba",
+      "name": "HTTP DELETE",
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "jsCode": "const st = $('Post State').first().json;\nconst stage = 'post_http';\nconst attempt = st.attempt ?? 0;\nconst maxA = st.maxAttempt ?? 4;\nconst base = st.baseMs ?? 2000;\nconst maxMs = st.maxMs ?? 20000;\n\nconst inItem = $input.first().json;\nconst status = inItem.statusCode ?? inItem.status ?? 0;\nconst isJsonErr = !!(inItem && inItem.error);\nconst code = inItem.code;\nconst ok = (code >= 200 && code < 300) && !isJsonErr;\n\n// Success\nif (ok) return [{ json: { ...st, attempt: 0, stage, ok: true, status, next: 'post2' } }];\n\n// Retry ?\nif (attempt < maxA) {\n  const next = attempt + 1;\n  const waitMs = Math.min(base * (2 ** (next - 1)), maxMs);\n  return [{ json: { ...st, attempt: next, stage, ok: false, waitMs, tag: `HTTP_${status||'ERR'}`, next: 'delete' } }];\n}\n\n// Final\nreturn [{ json: { ...st, stage, ok: false, final: true, tag: `HTTP_${status||'ERR'}`, next: null } }];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        7664,
+        880
+      ],
+      "id": "894ca982-6e6a-46ae-9c40-a83a15a5b4ce",
+      "name": "HTTP delete Decide & Backoff"
+    },
+    {
+      "parameters": {
+        "authentication": "privateKey",
+        "command": "=bash -lc '\ncat <<'\"'\"'EOF'\"'\"' | jq -c -Rrs \\\n  --arg ts \"'\"{{$now}}\"'\" \\\n  --arg stage \"delete\" \\\n  --arg event \"success\" \\\n  '\"'\"'{ts:$ts,stage:$stage,event:$event,msg:.}'\"'\"' \\\n  >> \"{{$('Post State').first().json.logPath}}\"\n{{$json.msg}}\nEOF\n'"
+      },
+      "type": "n8n-nodes-base.ssh",
+      "typeVersion": 1,
+      "position": [
+        8032,
+        800
+      ],
+      "id": "635c88c6-d39f-446f-b8a9-14909223ccfc",
+      "name": "Log http delete success",
+      "credentials": {
+        "sshPrivateKey": {
+          "id": "xm2ZPfPGfUHMrRyL",
+          "name": "SSH Vagrant"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "# Exécution Spark: transformation en TXT",
+        "height": 672,
+        "width": 1104,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        5408,
+        1376
+      ],
+      "typeVersion": 1,
+      "id": "c375e731-3f7e-47e4-9ae4-a15c6e2e846f",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "# Mise à jour des données dans Milvus (HTTP POST)",
+        "height": 672,
+        "width": 1088,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        6608,
+        1376
+      ],
+      "typeVersion": 1,
+      "id": "16d8c7f0-6be4-426a-b5b3-6a7562f63fb9",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "content": "# Exécution Spark: mise à jour du statut local",
+        "height": 688,
+        "width": 1088,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        7760,
+        1360
+      ],
+      "typeVersion": 1,
+      "id": "a979eb4a-8e31-491c-93e0-198ca633aa62",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "content": "# Mise à jour des données dans Milvus (HTTP DELETE)",
+        "height": 656,
+        "width": 1088,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        7344,
+        672
+      ],
+      "typeVersion": 1,
+      "id": "8b8b9c98-80a8-42f6-86fa-ba4fbdb71f1c",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "content": "# Importation des données dans NoSQL",
+        "height": 656,
+        "width": 1280,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        4000,
+        1376
+      ],
+      "typeVersion": 1,
+      "id": "89736a73-198f-4a94-870a-e78a04f4decd",
+      "name": "Sticky Note4"
+    },
+    {
+      "parameters": {
+        "content": "# Validation table NoSQL",
+        "height": 656,
+        "width": 1120,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        2784,
+        1376
+      ],
+      "typeVersion": 1,
+      "id": "308957db-82ec-418e-ab43-e082468950c1",
+      "name": "Sticky Note5"
+    },
+    {
+      "parameters": {
+        "content": "# Sauvegarde des données",
+        "height": 656,
+        "width": 1296,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1376,
+        1360
+      ],
+      "typeVersion": 1,
+      "id": "6fe8b84a-4902-46f7-84a0-a82779acd226",
+      "name": "Sticky Note6"
+    },
+    {
+      "parameters": {
+        "content": "# Récupération des formulaires (API)",
+        "height": 656,
+        "width": 1744,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -432,
+        1360
+      ],
+      "typeVersion": 1,
+      "id": "18b320fd-7861-4282-8d22-4c37e0024ac9",
+      "name": "Sticky Note7"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        880,
+        1776
+      ],
+      "id": "30f84023-eb3b-4e06-acb1-2bd41a67b9d7",
+      "name": "No Operation, do nothing1"
+    },
+    {
+      "parameters": {
+        "operation": "toJson",
+        "binaryPropertyName": "=data",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.convertToFile",
+      "typeVersion": 1.1,
+      "position": [
+        1648,
+        1536
+      ],
+      "id": "6a263de2-8e94-493a-bcbf-9fc3be8b535b",
+      "name": "Convert to File2"
+    },
+    {
+      "parameters": {
+        "path": "aa89d3e8-b8a4-4edb-8d03-da4f52b361ce",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -752,
+        1536
+      ],
+      "id": "a06ef508-2511-4197-801e-d8ecda2397a3",
+      "name": "Webhook",
+      "webhookId": "aa89d3e8-b8a4-4edb-8d03-da4f52b361ce"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        []
+      ]
+    },
+    "Decide & Backoff": {
+      "main": [
+        [
+          {
+            "node": "OK?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OK?": {
+      "main": [
+        [
+          {
+            "node": "Log success",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Final?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Backoff wait": {
+      "main": [
+        [
+          {
+            "node": "State",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "State": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Init state": {
+      "main": [
+        [
+          {
+            "node": "State",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Log attempt_start": {
+      "main": [
+        [
+          {
+            "node": "Append log attempt_retry",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Log retry": {
+      "main": [
+        [
+          {
+            "node": "Append log attempt_retry",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Log success": {
+      "main": [
+        [
+          {
+            "node": "Append log success",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Log final_fail": {
+      "main": [
+        [
+          {
+            "node": "Append log final_fail",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Log attempt_start",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Log retry",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Final?": {
+      "main": [
+        [
+          {
+            "node": "Log final_fail",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Backoff wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append log attempt_retry": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append log final_fail": {
+      "main": [
+        [
+          {
+            "node": "No Operation, do nothing1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Build data (atomic)": {
+      "main": [
+        [
+          {
+            "node": "Log",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Validate JSONL": {
+      "main": [
+        [
+          {
+            "node": "Init DDL state",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append log success": {
+      "main": [
+        [
+          {
+            "node": "Create schema1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Log": {
+      "main": [
+        [
+          {
+            "node": "Append log",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append log": {
+      "main": [
+        [
+          {
+            "node": "Validate JSONL",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Init DDL state": {
+      "main": [
+        [
+          {
+            "node": "DDL State",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "DDL State": {
+      "main": [
+        [
+          {
+            "node": "Ensure table document NOSQL",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "DDL Decide & Backoff": {
+      "main": [
+        [
+          {
+            "node": "DDL ok ?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Log DDL success": {
+      "main": [
+        [
+          {
+            "node": "Import Init",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If DDL final_error": {
+      "main": [
+        [
+          {
+            "node": "Log DDL final_error",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Log DDL retry",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "DDL State",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "DDL ok ?": {
+      "main": [
+        [
+          {
+            "node": "Log DDL success",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "If DDL final_error",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Import Init": {
+      "main": [
+        [
+          {
+            "node": "Import State",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Import State": {
+      "main": [
+        [
+          {
+            "node": "Import",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Import": {
+      "main": [
+        [
+          {
+            "node": "Import Decide & Backoff",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Import Decide & Backoff": {
+      "main": [
+        [
+          {
+            "node": "Import OK?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Import OK?": {
+      "main": [
+        [
+          {
+            "node": "Log import success",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Final?1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Log import success": {
+      "main": [
+        [
+          {
+            "node": "Post Init",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Final?1": {
+      "main": [
+        [
+          {
+            "node": "Log import final_error",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Log import retry",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Log import final_error": {
+      "main": [
+        [
+          {
+            "node": "Throw Import error",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "Import State",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Post Init": {
+      "main": [
+        [
+          {
+            "node": "Post State",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Post State": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "SSH Post1": {
+      "main": [
+        [
+          {
+            "node": "Post1 Decide & Backoff",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Post1 Decide & Backoff": {
+      "main": [
+        [
+          {
+            "node": "Post1 OK?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Post1 OK?": {
+      "main": [
+        [
+          {
+            "node": "Log post1 success",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Merge3",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Final post ?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Log post1 success": {
+      "main": [
+        [
+          {
+            "node": "Merge3",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Log post1 error_final": {
+      "main": [
+        [
+          {
+            "node": "Throw FailPost1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Log post1 retry": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Wait1": {
+      "main": [
+        [
+          {
+            "node": "Post State",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "Wait1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait2": {
+      "main": [
+        [
+          {
+            "node": "Post State",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge1": {
+      "main": [
+        [
+          {
+            "node": "Wait2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Post": {
+      "main": [
+        [
+          {
+            "node": "HTTP Decide & Backoff",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Decide & Backoff": {
+      "main": [
+        [
+          {
+            "node": "HTTP OK?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP OK?": {
+      "main": [
+        [
+          {
+            "node": "Log http success",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Merge4",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "HTTP final",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP final": {
+      "main": [
+        [
+          {
+            "node": "Log http error_final",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Log http retry",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Merge1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Final post ?": {
+      "main": [
+        [
+          {
+            "node": "Log post1 error_final",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Log post1 retry",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Log http retry": {
+      "main": [
+        [
+          {
+            "node": "Merge1",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Log http success": {
+      "main": [
+        [
+          {
+            "node": "Merge4",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Log http error_final": {
+      "main": [
+        [
+          {
+            "node": "Throw FailHttp",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait3": {
+      "main": [
+        [
+          {
+            "node": "Post State",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge2": {
+      "main": [
+        [
+          {
+            "node": "Wait3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "SSH Post2": {
+      "main": [
+        [
+          {
+            "node": "Post2 Decide & Backoff",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Post2 Decide & Backoff": {
+      "main": [
+        [
+          {
+            "node": "Post2 OK?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Post2 OK?": {
+      "main": [
+        [
+          {
+            "node": "Log post2 success",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Final post2 ?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Final post2 ?": {
+      "main": [
+        [
+          {
+            "node": "Log post2 error_final",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Log post2 retry",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Merge2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Log post2 error_final": {
+      "main": [
+        [
+          {
+            "node": "Throw FailPost",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Log post2 retry": {
+      "main": [
+        [
+          {
+            "node": "Merge2",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "SSH Post1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "HTTP Post",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "HTTP DELETE",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "SSH Post2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge3": {
+      "main": [
+        [
+          {
+            "node": "Post State",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge4": {
+      "main": [
+        [
+          {
+            "node": "Post State",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request1": {
+      "main": [
+        [
+          {
+            "node": "Decide & Backoff",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "write data1": {
+      "main": [
+        [
+          {
+            "node": "Build data (atomic)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create schema1": {
+      "main": [
+        [
+          {
+            "node": "Convert to File2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Ensure table document NOSQL": {
+      "main": [
+        [
+          {
+            "node": "DDL Decide & Backoff",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait4": {
+      "main": [
+        [
+          {
+            "node": "Post State",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge5": {
+      "main": [
+        [
+          {
+            "node": "Wait4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP OK?1": {
+      "main": [
+        [
+          {
+            "node": "Log http delete success",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Merge6",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "HTTP final1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP final1": {
+      "main": [
+        [
+          {
+            "node": "Log http error_final1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Log http retry1",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Merge5",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Log http retry1": {
+      "main": [
+        [
+          {
+            "node": "Merge5",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Log http error_final1": {
+      "main": [
+        [
+          {
+            "node": "Throw FailHttp1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge6": {
+      "main": [
+        [
+          {
+            "node": "Post State",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP DELETE": {
+      "main": [
+        [
+          {
+            "node": "HTTP delete Decide & Backoff",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP delete Decide & Backoff": {
+      "main": [
+        [
+          {
+            "node": "HTTP OK?1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Log http delete success": {
+      "main": [
+        [
+          {
+            "node": "Merge6",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Convert to File2": {
+      "main": [
+        [
+          {
+            "node": "write data1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Init state",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "saveExecutionProgress": false,
+    "callerPolicy": "workflowsFromSameOwner"
+  },
+  "versionId": "4c247c7b-72ee-4c50-9347-b37f9655c29b",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "6a350d075c6ab0d133f05a633442564120ee047b080709f9c00c75374ccaed0e"
+  },
+  "id": "ts6w2Rape7ITHWhW",
+  "tags": []
+}

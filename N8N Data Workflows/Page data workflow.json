@@ -1,0 +1,2081 @@
+{
+  "name": "Page data workflow",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -80,
+        400
+      ],
+      "id": "62e1be74-dadf-4a45-a311-42d89b737abc",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "jsCode": "\nreturn $input.first().json;"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        704,
+        432
+      ],
+      "id": "70f6ccba-2caf-48ff-89c7-efd556e06a21",
+      "name": "Page"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        544,
+        336
+      ],
+      "id": "8a09e19f-6755-4635-882c-b37b5eb1e193",
+      "name": "Loop Page"
+    },
+    {
+      "parameters": {
+        "mode": "raw",
+        "jsonOutput": "{\"httpPath\":\"http://host.docker.internal:8000/v1/render/extract\",\n  \"jsonIndex\":0,\n    \"pages\":[{\"title\": \"Getting started\", \"breadcrumbs\": [], \"url\": \"https://portal.mwater.co/#/resource_center/getting_started\"},\n{\"title\": \"How to create an account\", \"breadcrumbs\": [], \"url\": \"https://portal.mwater.co/#/resource_center/account_creation\"},\n{\"title\": \"Frequently asked questions\", \"breadcrumbs\": [], \"url\": \"https://portal.mwater.co/#/resource_center/faq\"},\n{\"title\": \"About Solstice\", \"breadcrumbs\": [\"About Us\"], \"url\": \"https://portal.mwater.co/#/resource_center/about_solstice\"},\n{\"title\": \"About mWater\", \"breadcrumbs\": [\"About Us\"], \"url\": \"https://portal.mwater.co/#/resource_center/about_mwater\"},\n{\"title\": \"mWater as a Digital Public Good\", \"breadcrumbs\": [\"About Us\"], \"url\": \"https://portal.mwater.co/#/resource_center/public_good\"},\n{\"title\": \"Terms of Service\", \"breadcrumbs\": [\"About Us\", \"Policies\"], \"url\": \"https://portal.mwater.co/#/resource_center/tos\"},\n{\"title\": \"Privacy policy\", \"breadcrumbs\": [\"About Us\", \"Policies\"], \"url\": \"https://portal.mwater.co/#/resource_center/privacy\"},\n{\"title\": \"GDPR\", \"breadcrumbs\": [\"About Us\", \"Policies\"], \"url\": \"https://portal.mwater.co/#/resource_center/gdpr\"},\n{\"title\": \"Acceptable use\", \"breadcrumbs\": [\"About Us\", \"Policies\"], \"url\": \"https://portal.mwater.co/#/resource_center/acceptable_use\"},\n{\"title\": \"Data security\", \"breadcrumbs\": [\"About Us\", \"Policies\"], \"url\": \"https://portal.mwater.co/#/resource_center/security\"},\n{\"title\": \"Data collection ethical guidelines\", \"breadcrumbs\": [\"About Us\", \"Policies\"], \"url\": \"https://portal.mwater.co/#/resource_center/ethics\"},\n{\"title\": \"Open source policy\", \"breadcrumbs\": [\"About Us\", \"Policies\"], \"url\": \"https://portal.mwater.co/#/resource_center/open_access\"},\n{\"title\": \"Translate the mWater Portal\", \"breadcrumbs\": [\"Using mWater\"], \"url\": \"https://portal.mwater.co/#/resource_center/translate_portal\"},\n{\"title\": \"Training Center\", \"breadcrumbs\": [\"Using mWater\"], \"url\": \"https://portal.mwater.co/#/resource_center/about_mwtraining_centerater\"},\n{\"title\": \"Managing your Blues\", \"breadcrumbs\": [\"Using mWater\"], \"url\": \"https://portal.mwater.co/#/resource_center/managing_blues\"},\n{\"title\": \"Creating and managing user accounts\", \"breadcrumbs\": [\"Using mWater\", \"Plan\"], \"url\": \"https://portal.mwater.co/#/resource_center/manage_user_accounts\"},\n{\"title\": \"Using custom configs\", \"breadcrumbs\": [\"Using mWater\", \"Plan\"], \"url\": \"https://portal.mwater.co/#/resource_center/custom_config\"},\n{\"title\": \"Integrating water quality overview\", \"breadcrumbs\": [\"Using mWater\", \"Plan\", \"Integrating water quality testing\"], \"url\": \"https://portal.mwater.co/#/resource_center/integrating_water_quality_overview\"},\n{\"title\": \"mWater test kits\", \"breadcrumbs\": [\"Using mWater\", \"Plan\", \"Integrating water quality testing\"], \"url\": \"https://portal.mwater.co/#/resource_center/integrating_mwater_test_kits\"},\n{\"title\": \"Aquagenx Compartment Bag Test\", \"breadcrumbs\": [\"Using mWater\", \"Plan\", \"Integrating water quality testing\"], \"url\": \"https://portal.mwater.co/#/resource_center/integrating_aquagenx\"},\n{\"title\": \"Importing site data\", \"breadcrumbs\": [\"Using mWater\", \"Plan\", \"Incorporating existing data\"], \"url\": \"https://portal.mwater.co/#/resource_center/importing_sites\"},\n{\"title\": \"Importing survey designs\", \"breadcrumbs\": [\"Using mWater\", \"Plan\", \"Incorporating existing data\"], \"url\": \"https://portal.mwater.co/#/resource_center/importing_survey_designs\"},\n{\"title\": \"Importing survey data\", \"breadcrumbs\": [\"Using mWater\", \"Plan\", \"Incorporating existing data\"], \"url\": \"https://portal.mwater.co/#/resource_center/importing_surveys\"},\n{\"title\": \"Importing surveys from Kobo\", \"breadcrumbs\": [\"Using mWater\", \"Plan\", \"Incorporating existing data\"], \"url\": \"https://portal.mwater.co/#/resource_center/importing_kobo\"},\n{\"title\": \"Importing UTM coordinates\", \"breadcrumbs\": [\"Using mWater\", \"Plan\", \"Incorporating existing data\"], \"url\": \"https://portal.mwater.co/#/resource_center/importing_utm\"},\n{\"title\": \"Choosing a device\", \"breadcrumbs\": [\"Using mWater\", \"Plan\", \"Prepare mobile devices\"], \"url\": \"https://portal.mwater.co/#/resource_center/device_selection\"},\n{\"title\": \"Device knowledge base\", \"breadcrumbs\": [\"Using mWater\", \"Plan\", \"Prepare mobile devices\"], \"url\": \"https://portal.mwater.co/#/resource_center/device_knowledge_base\"},\n{\"title\": \"Android setup\", \"breadcrumbs\": [\"Using mWater\", \"Plan\", \"Prepare mobile devices\"], \"url\": \"https://portal.mwater.co/#/resource_center/android_setup\"},\n{\"title\": \"Using organizations\", \"breadcrumbs\": [\"Using mWater\", \"Plan\"], \"url\": \"https://portal.mwater.co/#/resource_center/orgs\"},\n{\"title\": \"Using sites\", \"breadcrumbs\": [\"Using mWater\", \"Plan\"], \"url\": \"https://portal.mwater.co/#/resource_center/sites_info\"},\n{\"title\": \"Site management\", \"breadcrumbs\": [\"Using mWater\", \"Plan\"], \"url\": \"https://portal.mwater.co/#/resource_center/site_management\"},\n{\"title\": \"Using the planning tool\", \"breadcrumbs\": [\"Using mWater\", \"Plan\"], \"url\": \"https://portal.mwater.co/#/resource_center/planning_tool\"},\n{\"title\": \"Using indicators\", \"breadcrumbs\": [\"Using mWater\", \"Plan\"], \"url\": \"https://portal.mwater.co/#/resource_center/indicators_info\"},\n{\"title\": \"Using documents\", \"breadcrumbs\": [\"Using mWater\", \"Plan\"], \"url\": \"https://portal.mwater.co/#/resource_center/documents\"},\n{\"title\": \"How to do longitudinal/recurring data monitoring\", \"breadcrumbs\": [\"Using mWater\", \"Plan\"], \"url\": \"https://portal.mwater.co/#/resource_center/longitudinal_data\"},\n{\"title\": \"Geographical Administrative Boundaries\", \"breadcrumbs\": [\"Using mWater\", \"Plan\"], \"url\": \"https://portal.mwater.co/#/resource_center/admin_regions\"},\n{\"title\": \"Training overview\", \"breadcrumbs\": [\"Using mWater\", \"Train\"], \"url\": \"https://portal.mwater.co/#/resource_center/training_overview\"},\n{\"title\": \"Training checklist\", \"breadcrumbs\": [\"Using mWater\", \"Train\"], \"url\": \"https://portal.mwater.co/#/resource_center/training_checklist\"},\n{\"title\": \"Surveys overview\", \"breadcrumbs\": [\"Using mWater\", \"Deploy\", \"Surveys\", \"Surveys\"], \"url\": \"https://portal.mwater.co/#/resource_center/surveys_overview\"},\n{\"title\": \"Surveys>Design\", \"breadcrumbs\": [\"Using mWater\", \"Deploy\", \"Surveys\", \"Surveys\"], \"url\": \"https://portal.mwater.co/#/resource_center/surveys_design\"},\n{\"title\": \"Surveys>Translate\", \"breadcrumbs\": [\"Using mWater\", \"Deploy\", \"Surveys\", \"Surveys\"], \"url\": \"https://portal.mwater.co/#/resource_center/surveys_translate\"},\n{\"title\": \"Surveys>Preview\", \"breadcrumbs\": [\"Using mWater\", \"Deploy\", \"Surveys\", \"Surveys\"], \"url\": \"https://portal.mwater.co/#/resource_center/surveys_preview\"},\n{\"title\": \"Surveys>Settings\", \"breadcrumbs\": [\"Using mWater\", \"Deploy\", \"Surveys\", \"Surveys\"], \"url\": \"https://portal.mwater.co/#/resource_center/surveys_settings\"},\n{\"title\": \"Surveys>Deploy\", \"breadcrumbs\": [\"Using mWater\", \"Deploy\", \"Surveys\", \"Surveys\"], \"url\": \"https://portal.mwater.co/#/resource_center/surveys_deploy\"},\n{\"title\": \"Surveys>Assignments\", \"breadcrumbs\": [\"Using mWater\", \"Deploy\", \"Surveys\", \"Surveys\"], \"url\": \"https://portal.mwater.co/#/resource_center/surveys_assignments\"},\n{\"title\": \"Surveys>Responses\", \"breadcrumbs\": [\"Using mWater\", \"Deploy\", \"Surveys\", \"Surveys\"], \"url\": \"https://portal.mwater.co/#/resource_center/surveys_responses\"},\n{\"title\": \"Surveys>Visualizations\", \"breadcrumbs\": [\"Using mWater\", \"Deploy\", \"Surveys\", \"Surveys\"], \"url\": \"https://portal.mwater.co/#/resource_center/surveys_visualizations\"},\n{\"title\": \"Surveys>Activity\", \"breadcrumbs\": [\"Using mWater\", \"Deploy\", \"Surveys\", \"Surveys\"], \"url\": \"https://portal.mwater.co/#/resource_center/surveys_activity\"},\n{\"title\": \"Surveys>Survey report\", \"breadcrumbs\": [\"Using mWater\", \"Deploy\", \"Surveys\", \"Surveys\"], \"url\": \"https://portal.mwater.co/#/resource_center/surveys_survey_report\"},\n{\"title\": \"Using conditions in surveys\", \"breadcrumbs\": [\"Using mWater\", \"Deploy\", \"Surveys\", \"Surveys\"], \"url\": \"https://portal.mwater.co/#/resource_center/using_conditions\"},\n{\"title\": \"Using validation in surveys\", \"breadcrumbs\": [\"Using mWater\", \"Deploy\", \"Surveys\", \"Surveys\"], \"url\": \"https://portal.mwater.co/#/resource_center/using_validation\"},\n{\"title\": \"Using roster questions\", \"breadcrumbs\": [\"Using mWater\", \"Deploy\", \"Surveys\", \"Surveys\"], \"url\": \"https://portal.mwater.co/#/resource_center/using_rosters\"},\n{\"title\": \"Using images in instructions\", \"breadcrumbs\": [\"Using mWater\", \"Deploy\", \"Surveys\", \"Surveys\"], \"url\": \"https://portal.mwater.co/#/resource_center/using_images_instructions\"},\n{\"title\": \"Using the question library\", \"breadcrumbs\": [\"Using mWater\", \"Deploy\", \"Surveys\", \"Surveys\"], \"url\": \"https://portal.mwater.co/#/resource_center/using_question_library\"},\n{\"title\": \"Using cascading questions\", \"breadcrumbs\": [\"Using mWater\", \"Deploy\", \"Surveys\", \"Surveys\"], \"url\": \"https://portal.mwater.co/#/resource_center/using_cascading_question_list\"},\n{\"title\": \"Managing roles and permissions\", \"breadcrumbs\": [\"Using mWater\", \"Deploy\", \"Surveys\"], \"url\": \"https://portal.mwater.co/#/resource_center/deploy_roles_permissions\"},\n{\"title\": \"App overview\", \"breadcrumbs\": [\"Using mWater\", \"Collect\"], \"url\": \"https://portal.mwater.co/#/resource_center/app_overview\"},\n{\"title\": \"App storage\", \"breadcrumbs\": [\"Using mWater\", \"Collect\"], \"url\": \"https://portal.mwater.co/#/resource_center/app_storage\"},\n{\"title\": \"Asset Management\", \"breadcrumbs\": [\"Using mWater\", \"Collect\"], \"url\": \"https://portal.mwater.co/#/resource_center/surveyor_water_systems\"},\n{\"title\": \"Customer and Billing Management\", \"breadcrumbs\": [\"Using mWater\", \"Collect\"], \"url\": \"https://portal.mwater.co/#/resource_center/customer_management\"},\n{\"title\": \"Creating an Asset System Dashboard\", \"breadcrumbs\": [\"Using mWater\", \"Collect\"], \"url\": \"https://portal.mwater.co/#/resource_center/asset_system_dashboard\"},\n{\"title\": \"Using Pipes\", \"breadcrumbs\": [\"Using mWater\", \"Collect\"], \"url\": \"https://portal.mwater.co/#/resource_center/surveyor_pipes\"},\n{\"title\": \"Using Issues\", \"breadcrumbs\": [\"Using mWater\", \"Collect\"], \"url\": \"https://portal.mwater.co/#/resource_center/issues\"},\n{\"title\": \"Using site approvals\", \"breadcrumbs\": [\"Using mWater\", \"Clean\"], \"url\": \"https://portal.mwater.co/#/resource_center/clean_site_approvals\"},\n{\"title\": \"Deduplicating sites\", \"breadcrumbs\": [\"Using mWater\", \"Clean\"], \"url\": \"https://portal.mwater.co/#/resource_center/clean_deduplicator\"},\n{\"title\": \"Using datasets\", \"breadcrumbs\": [\"Using mWater\", \"Clean\"], \"url\": \"https://portal.mwater.co/#/resource_center/clean_datasets\"},\n{\"title\": \"About Visualizations\", \"breadcrumbs\": [\"Using mWater\", \"Report\"], \"url\": \"https://portal.mwater.co/#/resource_center/about_visualizations\"},\n{\"title\": \"Using dashboards\", \"breadcrumbs\": [\"Using mWater\", \"Report\"], \"url\": \"https://portal.mwater.co/#/resource_center/report_dashboards\"},\n{\"title\": \"Using charts\", \"breadcrumbs\": [\"Using mWater\", \"Report\"], \"url\": \"https://portal.mwater.co/#/resource_center/report_charts\"},\n{\"title\": \"Using table of contents\", \"breadcrumbs\": [\"Using mWater\", \"Report\"], \"url\": \"https://portal.mwater.co/#/resource_center/report_toc\"},\n{\"title\": \"Using tables and datagrids\", \"breadcrumbs\": [\"Using mWater\", \"Report\"], \"url\": \"https://portal.mwater.co/#/resource_center/report_datagrids\"},\n{\"title\": \"Using pivot tables\", \"breadcrumbs\": [\"Using mWater\", \"Report\"], \"url\": \"https://portal.mwater.co/#/resource_center/report_pivot_tables\"},\n{\"title\": \"Creating maps\", \"breadcrumbs\": [\"Using mWater\", \"Report\"], \"url\": \"https://portal.mwater.co/#/resource_center/creating_maps\"},\n{\"title\": \"How to copy/paste widgets\", \"breadcrumbs\": [\"Using mWater\", \"Report\"], \"url\": \"https://portal.mwater.co/#/resource_center/report_copy_paste_widgets\"},\n{\"title\": \"Using filters\", \"breadcrumbs\": [\"Using mWater\", \"Report\"], \"url\": \"https://portal.mwater.co/#/resource_center/report_filters\"},\n{\"title\": \"Using expressions\", \"breadcrumbs\": [\"Using mWater\", \"Report\"], \"url\": \"https://portal.mwater.co/#/resource_center/report_expressions\"},\n{\"title\": \"Advanced expressions\", \"breadcrumbs\": [\"Using mWater\", \"Report\"], \"url\": \"https://portal.mwater.co/#/resource_center/advanced_expressions\"},\n{\"title\": \"Calculated data sources\", \"breadcrumbs\": [\"Using mWater\", \"Report\"], \"url\": \"https://portal.mwater.co/#/resource_center/calculated_data_sources\"},\n{\"title\": \"Using charts with relative date access\", \"breadcrumbs\": [\"Using mWater\", \"Report\"], \"url\": \"https://portal.mwater.co/#/resource_center/charts_date\"},\n{\"title\": \"Visualizing metadata\", \"breadcrumbs\": [\"Using mWater\", \"Report\"], \"url\": \"https://portal.mwater.co/#/resource_center/report_metadata\"},\n{\"title\": \"Mobile friendly dashboards\", \"breadcrumbs\": [\"Using mWater\", \"Report\"], \"url\": \"https://portal.mwater.co/#/resource_center/mobile_friendly_dashboards\"},\n{\"title\": \"Downloading your data\", \"breadcrumbs\": [\"Using mWater\", \"Report\"], \"url\": \"https://portal.mwater.co/#/resource_center/download\"},\n{\"title\": \"Using the mWater API\", \"breadcrumbs\": [\"Using mWater\", \"Report\"], \"url\": \"https://portal.mwater.co/#/resource_center/report_api\"},\n{\"title\": \"API quickstart\", \"breadcrumbs\": [\"Using mWater\", \"Report\"], \"url\": \"https://portal.mwater.co/#/resource_center/api_quickstart\"},\n{\"title\": \"Bulk downloading photos\", \"breadcrumbs\": [\"Using mWater\", \"Report\"], \"url\": \"https://portal.mwater.co/#/resource_center/bulk_download_photos\"},\n{\"title\": \"Exporting data\", \"breadcrumbs\": [\"Using mWater\", \"Report\"], \"url\": \"https://portal.mwater.co/#/resource_center/export_guide\"}]\n\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        64,
+        400
+      ],
+      "id": "2b9f543a-279d-4e76-b431-8d5027c28d68",
+      "name": "Init"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Prend items d'entrée, cherche item.json.pages (tableau), et émet 1 item par page\nconst out = [];\n\n  let pages = $input.first().json.pages;\n  // Si pages est une chaîne JSON, on parse\n  if (typeof pages === 'string') {\n    try { pages = JSON.parse(pages); } catch (e) { pages = []; }\n  }\n\n  if (Array.isArray(pages)) {\n    for (const p of pages) out.push({ json: p });\n  }\n\n\nreturn out;\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        192,
+        400
+      ],
+      "id": "b7043c73-f9c8-4aa8-a3fc-5760f7982843",
+      "name": "To list"
+    },
+    {
+      "parameters": {
+        "jsCode": "const st = $('State Get Html').first().json;\nconst BASE = st.baseMs ?? 1000;\nconst MAX  = st.maxMs  ?? 30000;\nconst MAX_ATTEMPT = st.maxAttempt ?? 5;\nconst attempt = st.attempt ?? 0;\n\nconst inItem = $input.first().json;\n\nfunction parseAxiosError(err) {\n  const out = { code: null, httpStatus: null, msg: null, step: null, tag: null };\n  if (!err) return out;\n\n  const raw = (err.message || err) + '';\n  out.msg = raw;\n\n  const m = raw.match(/^\\s*(\\d{3})\\s*-\\s*\"(.*)\"\\s*$/s);\n  if (m) {\n    out.httpStatus = Number(m[1]);\n    try {\n      const innerStr = m[2].replace(/\\\\\"/g, '\"'); \n      const inner = JSON.parse(innerStr);\n      out.code = inner.code ?? out.httpStatus ?? null;\n      if (inner.message && typeof inner.message === 'object') {\n        out.step = inner.message.step ?? null;\n        const innerMsg = inner.message.message || inner.message.error || null;\n        if (innerMsg) out.msg = innerMsg;\n      }\n      out.tag = inner.path || (inner.status || '').toUpperCase() || null;\n    } catch (e) { }\n  } else if (typeof err === 'object') {\n    out.code = err.status ?? err.code ?? null;\n  }\n  return out;\n}\n\nfunction hasLogicalError(payload) {\n  if (!payload) return false;\n  if (Array.isArray(payload)) return payload.some(x => x && typeof x === 'object' && x.error);\n  return !!payload.error;\n}\n\nfunction jitter(ms) {\n  const delta = ms * 0.2;\n  return Math.round(ms + (Math.random() * 2 - 1) * delta);\n}\n\nconst isErr = hasLogicalError(inItem);\nlet errInfo = null;\nif (isErr) {\n  const errObj = Array.isArray(inItem)\n    ? (inItem.find(x => x && x.error)?.error ?? inItem[0]?.error ?? inItem.error)\n    : inItem.error;\n  errInfo = parseAxiosError(errObj);\n}\n\nif (isErr && attempt < MAX_ATTEMPT) {\n  const nextAttempt = attempt + 1;\n  const rawWait = Math.min(BASE * Math.pow(2, nextAttempt - 1), MAX);\n  const waitMs = jitter(rawWait);\n  const msg = (errInfo?.msg || (inItem.error?.message || inItem.error)) ?? 'Unknown error';\n\n  return [{\n    json: {\n      ...st,\n      attempt: nextAttempt,\n      waits: Math.max(1, Math.round(waitMs / 1000)),\n      ok: false,\n      errorMessage: msg,\n      errorCode: errInfo?.code ?? null,\n      errorHttp: errInfo?.httpStatus ?? null,\n      errorStep: errInfo?.step ?? null,\n      errorTag: errInfo?.tag ?? null\n    }\n  }];\n}\n\nif (isErr && attempt >= MAX_ATTEMPT) {\n  const msg = (errInfo?.msg || (inItem.error?.message || inItem.error)) ?? 'Unknown error';\n  return [{\n    json: {\n      ...st,\n      ok: false,\n      final: true,\n      errorMessage: msg,\n      errorCode: errInfo?.code ?? null,\n      errorHttp: errInfo?.httpStatus ?? null,\n      errorStep: errInfo?.step ?? null,\n      errorTag: errInfo?.tag ?? null\n    }\n  }];\n}\n\nif (Array.isArray(inItem)) {\n  return inItem.map(x => ({\n    json: { ...x, ok: true },\n    pairedItem: { item: 0 }\n  }));\n}\nreturn [{\n  json: { ...inItem, ok: true },\n  pairedItem: { item: 0 }\n}];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2032,
+        416
+      ],
+      "id": "9e5d433e-9dda-473a-8ec7-575d2ea24fc4",
+      "name": "Decide & Backoff Get Html",
+      "executeOnce": false
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "75aec18f-30b8-4765-95b9-672489ab8505",
+              "leftValue": "={{ $json.ok }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        2208,
+        432
+      ],
+      "id": "42711ab9-fa9f-4d76-80e0-30e3ac030607",
+      "name": "OK?1"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "eead3369-b3ca-4d0a-98ea-be2acd1e7054",
+              "name": "attempt",
+              "value": 0,
+              "type": "number"
+            },
+            {
+              "id": "25b7ae90-cb6d-45cd-8e9a-dabccebee784",
+              "name": "maxAttempt",
+              "value": 5,
+              "type": "number"
+            },
+            {
+              "id": "a7bae738-2829-4b8b-919c-8263ecae3143",
+              "name": "baseMs",
+              "value": 1000,
+              "type": "number"
+            },
+            {
+              "id": "62ec926f-57ee-4468-bbc9-6b4a4bef5381",
+              "name": "maxMs",
+              "value": 50000,
+              "type": "number"
+            },
+            {
+              "id": "cf21bcee-0063-4b29-8174-feac1f9a4e13",
+              "name": "logPath",
+              "value": "=/vagrant/logs/page_workflow.jsonl",
+              "type": "string"
+            },
+            {
+              "id": "fae78e38-ba52-4b82-bf25-f2c6b63a13b5",
+              "name": "dataPath",
+              "value": "/vagrant/page/wrapped_data_page.json",
+              "type": "string"
+            },
+            {
+              "id": "f53d6d83-64cc-4de0-ba13-e7bd4e251efa",
+              "name": "dataDir",
+              "value": "/vagrant/page",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        880,
+        416
+      ],
+      "id": "ffacfb22-fc3d-45e5-bf3b-cd4917121e98",
+      "name": "Init state Get Html"
+    },
+    {
+      "parameters": {
+        "jsCode": "return $input.all();"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1072,
+        416
+      ],
+      "id": "672ed70f-2a0d-45c8-a3fe-8e8bc378dfce",
+      "name": "State Get Html"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "1196b8fc-1761-498b-825f-990583c417cc",
+              "leftValue": "={{$json.final}}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1808,
+        672
+      ],
+      "id": "b252c4f4-2422-4242-8398-1a17329da356",
+      "name": "Final?2"
+    },
+    {
+      "parameters": {
+        "jsCode": "const st = $('State Get Html').first().json;\n\nreturn [\n  {\n    json: {\n      ts: new Date().toISOString(),\n    stage: 'http',\n    event: 'success',\n    attempt: (st.attempt ?? 0) + 1,\n      logPath: st.logPath,\n    },\n  },\n];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2448,
+        464
+      ],
+      "id": "a96989e9-0eee-4aaf-8c5a-cd531b24f3de",
+      "name": "Log success1"
+    },
+    {
+      "parameters": {
+        "amount": "={{ $json.waits }}"
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        1520,
+        688
+      ],
+      "id": "df403c75-1242-4a9f-b7aa-7ebd190a4ab1",
+      "name": "Backoff wait1",
+      "webhookId": "fc58450b-1b02-49be-b9d8-4cc736af2163"
+    },
+    {
+      "parameters": {
+        "jsCode": "const st = $('State Get Html').first().json;\n\nreturn [{\n  json: {\n    ts: new Date().toISOString(),\n    stage: 'http',\n    event: 'attempt_start',  \n    attempt: (st.attempt ?? 0) ,\n    logPath: st.logPath\n  }\n}];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1472,
+        352
+      ],
+      "id": "9918eba2-ab2d-4f41-a8e2-95a1e8ca67be",
+      "name": "Log attempt_start1"
+    },
+    {
+      "parameters": {
+        "jsCode": "const st = $input.first().json; // contient attempt, waitMs, errorMessage, logPath via State\n\nreturn [{\n  json: {\n    ts: new Date().toISOString(),\n    stage: 'http',\n    event: 'retry',\n    attempt: st.attempt,\n    waitMs: st.waitMs,\n    error: st.errorMessage || 'Unknown error',\n    logPath: st.logPath\n  }\n}];\n\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1472,
+        512
+      ],
+      "id": "9d5ceafb-9654-4089-a14f-d190550677a9",
+      "name": "Log retry1"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "89bf5ca5-feaf-4e9f-acea-6cc373516f67",
+              "leftValue": "={{ $json.attempt }}",
+              "rightValue": 0,
+              "operator": {
+                "type": "number",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1280,
+        416
+      ],
+      "id": "1195b2f0-e611-42de-b9d2-94ed86f3213b",
+      "name": "If1"
+    },
+    {
+      "parameters": {
+        "authentication": "privateKey",
+        "command": "=bash -lc 'jq -c -n \\\n  --arg ts \"{{$json.ts}}\" \\\n  --arg stage \"{{$json.stage}}\" \\\n  --arg event \"{{$json.event}}\" \\\n  --argjson attempt {{$json.attempt}} \\\n  \"{\\\"ts\\\":\\$ts,\\\"stage\\\":\\$stage,\\\"event\\\":\\$event,\\\"attempt\\\":\\$attempt}\" \\\n  >> \"{{$json.logPath}}\"'\n"
+      },
+      "type": "n8n-nodes-base.ssh",
+      "typeVersion": 1,
+      "position": [
+        1680,
+        416
+      ],
+      "id": "e0d6f9dd-756c-4428-a4e6-fa68606b8c69",
+      "name": "Append log attempt_retry1",
+      "retryOnFail": false,
+      "credentials": {
+        "sshPrivateKey": {
+          "id": "xm2ZPfPGfUHMrRyL",
+          "name": "SSH Vagrant"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "authentication": "privateKey",
+        "command": "=bash -lc 'jq -c -n \\\n  --arg ts \"{{$json.ts}}\" \\\n  --arg stage \"{{$json.stage}}\" \\\n  --arg event \"{{$json.event}}\" \\\n  --argjson attempt {{$json.attempt}} \\\n  \"{\\\"ts\\\":\\$ts,\\\"stage\\\":\\$stage,\\\"event\\\":\\$event,\\\"attempt\\\":\\$attempt}\" \\\n  >> \"{{$json.logPath}}\"'\n"
+      },
+      "type": "n8n-nodes-base.ssh",
+      "typeVersion": 1,
+      "position": [
+        2624,
+        464
+      ],
+      "id": "eff683de-9f0c-4d87-94e3-62bf9b362434",
+      "name": "Append log success1",
+      "credentials": {
+        "sshPrivateKey": {
+          "id": "xm2ZPfPGfUHMrRyL",
+          "name": "SSH Vagrant"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Certaines versions d'n8n passent l'erreur dans $json\nconst st = $(\"State Get Html\").first().json;\nconst errorMsg =\n  $input.first().json.message || $input.first().json.error || \"Final failure\";\n\nreturn [\n  {\n    json: {\n      ts: new Date().toISOString(),\n      stage: \"http\",\n      event: \"final_fail\",\n      attempt: st.attempt ?? null,\n      error: errorMsg,\n      logPath: st.logPath,\n    },\n  },\n];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2016,
+        656
+      ],
+      "id": "a4510091-f388-4b55-9422-4a9520434a4b",
+      "name": "Log final_fail1"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        2320,
+        656
+      ],
+      "id": "d7ae5342-b556-40b6-bd38-08c5536189bd",
+      "name": "No Operation, do nothing1"
+    },
+    {
+      "parameters": {
+        "authentication": "privateKey",
+        "command": "=bash -lc 'jq -c -n \\\n  --arg ts \"{{$json.ts}}\" \\\n  --arg stage \"{{$json.stage}}\" \\\n  --arg event \"{{$json.event}}\" \\\n  --argjson attempt {{$json.attempt}} \\\n  \"{\\\"ts\\\":\\$ts,\\\"stage\\\":\\$stage,\\\"event\\\":\\$event,\\\"attempt\\\":\\$attempt}\" \\\n  >> \"{{$json.logPath}}\"'\n"
+      },
+      "type": "n8n-nodes-base.ssh",
+      "typeVersion": 1,
+      "position": [
+        2176,
+        656
+      ],
+      "id": "3d49dd75-3563-4c95-b33c-ac75f0da5cd6",
+      "name": "Append log final_fail1",
+      "credentials": {
+        "sshPrivateKey": {
+          "id": "xm2ZPfPGfUHMrRyL",
+          "name": "SSH Vagrant"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const r = $('HTTP Get Html').first().json\nif (r.status !== 'success' || !r.html) {\n  throw new Error('Renderer failed: status not success or html empty');\n}\n\nconst url = r.url;\n\nreturn [{\n  id: r.id,\n  url: url,\n  title: $('Page').first().json.title,\n  breadcrumbs: $('Page').first().json.breadcrumbs ?? [],\n  html: r.html\n}];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2864,
+        480
+      ],
+      "id": "6436d2c2-43c2-4a88-9d18-51ab7208d4c0",
+      "name": "Page Object"
+    },
+    {
+      "parameters": {
+        "jsCode": "\nfunction stripScriptsStyles(html) {\n  return html\n    .replace(/<script[\\s\\S]*?<\\/script>/gi, '')\n    .replace(/<style[\\s\\S]*?<\\/style>/gi, '');\n}\n\nfunction isolateMain(html) {\n  const markers = [\n    /<div[^>]*class=[\"'][^\"']*resource-guide-content-area[^\"']*[\"'][^>]*>/i,\n    /<div[^>]*class=[\"'][^\"']*resource-guide-right-content[^\"']*[\"'][^>]*>/i,\n  ];\n  for (const re of markers) {\n    const m = re.exec(html);\n    if (m) {\n      html = html.slice(m.index);\n      break;\n    }\n  }\n\n  html = html.replace(\n    /<div[^>]*class=[\"'][^\"']*resource-guide-nav-sidebar[^\"']*[\"'][^>]*>[\\s\\S]*?<\\/div>\\s*<\\/div>/i,\n    ''\n  );\n\n  html = html.replace(\n    /<div[^>]*class=[\"'][^\"']*resource-guide-search-header[^\"']*[\"'][^>]*>[\\s\\S]*?<\\/div>/i,\n    ''\n  );\n\n  return html;\n}\n\nfunction htmlToText(html) {\n  return html\n    .replace(/<\\s*br\\s*\\/?>/gi, '\\n')\n    .replace(/<\\/\\s*(p|div|section|article)\\s*>/gi, '\\n')\n    .replace(/<\\s*li[^>]*>/gi, '• ')\n    .replace(/<\\/\\s*li\\s*>/gi, '\\n')\n    .replace(/<\\s*h[1-6][^>]*>/gi, '\\n\\n')\n    .replace(/<\\/\\s*h[1-6]\\s*>/gi, '\\n\\n')\n    .replace(/<[^>]+>/g, '')\n    .replace(/&nbsp;/gi, ' ')\n    .replace(/&amp;/gi, '&')\n    .replace(/&lt;/gi, '<')\n    .replace(/&gt;/gi, '>')\n    .replace(/\\r/g, '')\n    .replace(/\\n{3,}/g, '\\n\\n')\n    .replace(/[ \\t]+/g, ' ')\n    .trim();\n}\n\nfunction collectImages(html) {\n  const imgs = [];\n  const re = /<img[^>]*src\\s*=\\s*[\"']([^\"']+)[\"'][^>]*?(?:alt\\s*=\\s*[\"']([^\"']*)[\"'])?[^>]*>/gi;\n  let m;\n  while ((m = re.exec(html))) {\n    const url = m[1];\n    const alt = (m[2] || '').trim() || undefined;\n    const isGif = /\\.gif(\\?|$)/i.test(url);\n    imgs.push({ url, ...(alt ? { alt } : {}), ...(isGif ? { type: 'gif' } : {}) });\n  }\n  return imgs;\n}\n\nfunction collectCaptions(html) {\n  const caps = [];\n  const re = /<div[^>]*class\\s*=\\s*[\"'][^\"']*caption[^\"']*[\"'][^>]*>([\\s\\S]*?)<\\/div>/gi;\n  let m;\n  while ((m = re.exec(html))) caps.push(htmlToText(m[1]));\n  return caps;\n}\n\nfunction collectVideos(html) {\n  const out = [];\n  const reV = /<(?:video|source)[^>]*src\\s*=\\s*[\"']([^\"']+)[\"'][^>]*>/gi;\n  let m;\n  while ((m = reV.exec(html))) out.push({ url: m[1] });\n  const reI = /<iframe[^>]*src\\s*=\\s*[\"']([^\"']+)[\"'][^>]*>/gi;\n  while ((m = reI.exec(html))) out.push({ url: m[1] });\n  return out;\n}\n\nreturn $input.all().map(item => {\n  const { id, url, title, breadcrumbs = [], html = '', tags = [] } = item.json;\n\n  const cleaned = stripScriptsStyles(html);\n  const mainHtml = isolateMain(cleaned);\n\n  const imagesAll = collectImages(mainHtml);\n  const gifs = imagesAll\n    .filter(x => x.type === 'gif')\n    .map(({ url, alt }) => ({ url, ...(alt ? { alt } : {}) }));\n\n  const captions = collectCaptions(mainHtml);\n\n  const images = imagesAll\n    .filter(x => x.type !== 'gif')\n    .map(({ url, alt }, i) => {\n      const base = { url, ...(alt ? { alt } : {}) };\n      const cap = captions[i];\n      return cap ? { ...base, caption: cap } : base;\n    });\n\n  const videos = collectVideos(mainHtml);\n  const text = htmlToText(mainHtml);\n\n  const page = {\n    id,\n    url,\n    title,               \n    breadcrumbs,\n    tags: Array.from(new Set([...(Array.isArray(tags) ? tags : [tags]).filter(Boolean)])),\n    content: {\n      text,              \n      images,            \n      gifs,              \n      videos             \n    },\n    created_at: new Date().toISOString()\n  };\n\n  return { json: page };\n});\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        3072,
+        480
+      ],
+      "id": "ce66c4a3-9103-4781-8a89-3ab9f05c8eb3",
+      "name": "Extract content"
+    },
+    {
+      "parameters": {
+        "jsCode": "\nconst i = $(\"Extract content\").first().json;\n\nconst page = {\n  id: i.id,                              \n  url: i.url,\n  title: i.title,                         \n  breadcrumbs: Array.isArray(i.breadcrumbs) ? i.breadcrumbs : [],\n  tags: Array.isArray(i.tags) ? i.tags : [],\n  content: {\n    text: (i.content && i.content.text) ? String(i.content.text) : \"\",\n    images: (i.content && Array.isArray(i.content.images)) ? i.content.images : [],\n    gifs:   (i.content && Array.isArray(i.content.gifs))   ? i.content.gifs   : [],\n    videos: (i.content && Array.isArray(i.content.videos)) ? i.content.videos : [],\n  },\n  created_at: i.created_at || new Date().toISOString()\n};\n\nfunction cleanMedia(arr){ \n  return arr.map(x => ({ url: x.url, ...(x.caption ? {caption: x.caption} : {}) }));\n}\npage.content.images = cleanMedia(page.content.images);\npage.content.gifs   = cleanMedia(page.content.gifs);\npage.content.videos = cleanMedia(page.content.videos);\n\n\nreturn [{  json: {id: i.id, url: i.url, created_at:i.created_at, title: i.title, doc: page} }];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        3600,
+        496
+      ],
+      "id": "f3966d5d-fd5f-41e5-87c1-dbdd9b06435b",
+      "name": "Clean for insert"
+    },
+    {
+      "parameters": {
+        "operation": "toJson",
+        "mode": "each",
+        "options": {
+          "format": false
+        }
+      },
+      "type": "n8n-nodes-base.convertToFile",
+      "typeVersion": 1.1,
+      "position": [
+        3744,
+        576
+      ],
+      "id": "d52e061e-4e14-4a63-bd16-74e1e68ab069",
+      "name": "Convert to File1"
+    },
+    {
+      "parameters": {
+        "operation": "write",
+        "fileName": "/mnt/data/page/raw_pages.jsonl",
+        "options": {
+          "append": true
+        }
+      },
+      "type": "n8n-nodes-base.readWriteFile",
+      "typeVersion": 1,
+      "position": [
+        3312,
+        720
+      ],
+      "id": "6def5c4a-7066-4091-8c28-db657c42fade",
+      "name": "Write data to file"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "15736deb-ee8c-4bd5-bd4f-0a42d741e657",
+              "name": "ddlAttempt",
+              "value": 0,
+              "type": "number"
+            },
+            {
+              "id": "4954ddfa-0464-40d0-bbb7-e5bf2b66eaf2",
+              "name": "ddlMaxAttempt",
+              "value": 1,
+              "type": "number"
+            },
+            {
+              "id": "f67a66b5-8f11-4948-85f4-1af5b9cbd84c",
+              "name": "ddlBaseMs",
+              "value": 2000,
+              "type": "number"
+            },
+            {
+              "id": "6e426132-cf61-4223-b469-df399c2affe2",
+              "name": "ddlMaxMs",
+              "value": 20000,
+              "type": "number"
+            },
+            {
+              "id": "9686908a-27a0-4696-847f-924dc46fc3fb",
+              "name": "logPath",
+              "value": "={{$('State Get Html').first().json.logPath}}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        4320,
+        480
+      ],
+      "id": "eeee1662-399b-475d-b232-a4862326531e",
+      "name": "Init DDL state1"
+    },
+    {
+      "parameters": {
+        "jsCode": "return $input.all();"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        4512,
+        480
+      ],
+      "id": "c391dfa5-78ad-4852-8783-dfd43154ecd7",
+      "name": "DDL State1"
+    },
+    {
+      "parameters": {
+        "jsCode": "const st = $('DDL State1').first().json;\n\nconst attempt     = st.ddlAttempt ?? 0;\nconst maxAttempt  = st.ddlMaxAttempt ?? 4;\nconst base        = st.ddlBaseMs ?? 2000;\nconst maxMs       = st.ddlMaxMs ?? 20000;\n\nconst code   = $input.first().json.code ?? 0;\nconst out    = `${$input.first().json.stdout || ''}\\n${$input.first().json.stderr || ''}`;\n\n// Transient: admin down / not connected\nconst isTransient = /(Cannot connect to any admins|Lost connection to Admin|Failed to connect to kvstore|Not Connected)/i.test(out);\n\n// if (code === 0) {\nif (!isTransient) {\n  // OK: on passe à l'import\n  return [{ json: { ...st, ddlOk: true } }];\n}\n\nif (isTransient && attempt < maxAttempt) {\n  const next = attempt + 1;\n  const waitMs = Math.min(base * (2 ** (next - 1)), maxMs);\n  return [{\n    json: {\n      ...st,\n      ddlOk: false,\n      ddlAttempt: next,\n      waitMs,\n      ddlTag: 'ADMIN_CONN',\n      ddlMsg: out.slice(0, 600)\n    }\n  }];\n}\n\n// Final (non-transient OU max tentatives atteintes)\nreturn [{\n  json: {\n    ...st,\n    ddlOk: false,\n    final: true,\n    ddlTag: isTransient ? 'ADMIN_CONN_MAX' : 'DDL_ERROR',\n    ddlMsg: out.slice(0, 800)\n  }\n}];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        4928,
+        480
+      ],
+      "id": "1fc73b10-e1ae-4ff8-a6d1-7f918bd0f925",
+      "name": "DDL Decide & Backoff1"
+    },
+    {
+      "parameters": {
+        "authentication": "privateKey",
+        "command": "=bash -lc 'jq -c -n \\\n  --arg ts \"'\"{{$now}}\"'\" \\\n  --arg stage \"ddl\" \\\n  --arg event \"success\" \\\n  \"{\\\"ts\\\":\\$ts,\\\"stage\\\":\\$stage,\\\"event\\\":\\$event}\" \\\n  >> \"{{$json.logPath}}\"'\n"
+      },
+      "type": "n8n-nodes-base.ssh",
+      "typeVersion": 1,
+      "position": [
+        5360,
+        464
+      ],
+      "id": "10f82f61-a61c-4f4f-b347-2a7fdf9dd4b6",
+      "name": "Log DDL success1",
+      "credentials": {
+        "sshPrivateKey": {
+          "id": "xm2ZPfPGfUHMrRyL",
+          "name": "SSH Vagrant"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "4c27044e-dbb1-4123-a655-1366bf1cf0a5",
+              "leftValue": "={{ $json.final }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        5104,
+        736
+      ],
+      "id": "2e09a888-e093-43b5-a0f8-1a8b0ddf08f1",
+      "name": "If DDL final_error1"
+    },
+    {
+      "parameters": {
+        "authentication": "privateKey",
+        "command": "=bash -lc '\ncat <<'\"'\"'EOF'\"'\"' | jq -c -Rrs \\\n  --arg ts \"{{$now}}\" \\\n  --arg stage \"ddl\" \\\n  --arg event \"error_final\" \\\n  --arg tag \"{{$json.ddlTag || \"\"}}\" \\\n  '\"'\"'{ts:$ts,stage:$stage,event:$event,tag:$tag,msg:.}'\"'\"' \\\n  >> \"{{$json.logPath}}\"\n{{$json.ddlMsg}}\nEOF\n'\n"
+      },
+      "type": "n8n-nodes-base.ssh",
+      "typeVersion": 1,
+      "position": [
+        5376,
+        640
+      ],
+      "id": "737f7f0b-9058-4d93-be92-0ff6b967c3ad",
+      "name": "Log DDL final_error1"
+    },
+    {
+      "parameters": {
+        "authentication": "privateKey",
+        "command": "=bash -lc 'jq -c -n \\\n  --arg ts \"'\"{{$now}}\"'\" \\\n  --arg stage \"ddl\" \\\n  --arg event \"retry\" \\\n  --argjson attempt {{$json.ddlAttempt || 0}} \\\n  --argjson waitMs {{$json.waitMs || 0}} \\\n  --arg tag \"{{$json.ddlTag || \"\"}}\" \\\n  \"{\\\"ts\\\":\\$ts,\\\"stage\\\":\\$stage,\\\"event\\\":\\$event,\\\"attempt\\\":\\$attempt,\\\"waitMs\\\":\\$waitMs,\\\"tag\\\":\\$tag}\" \\\n  >> \"{{$json.logPath}}\"'\n"
+      },
+      "type": "n8n-nodes-base.ssh",
+      "typeVersion": 1,
+      "position": [
+        5376,
+        816
+      ],
+      "id": "1d1e17af-0752-43e1-b0dc-8a74c475263a",
+      "name": "Log DDL retry1",
+      "credentials": {
+        "sshPrivateKey": {
+          "id": "xm2ZPfPGfUHMrRyL",
+          "name": "SSH Vagrant"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "5cf6515a-68fd-442a-a596-ad8abef73816",
+              "leftValue": "={{ $json.ddlOk }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        5136,
+        480
+      ],
+      "id": "a74d005f-3a57-443a-8c11-0f0cc3a65622",
+      "name": "DDL ok ?1"
+    },
+    {
+      "parameters": {
+        "authentication": "privateKey",
+        "command": "=/vagrant/page/./run_pages_pipeline.sh"
+      },
+      "type": "n8n-nodes-base.ssh",
+      "typeVersion": 1,
+      "position": [
+        3920,
+        272
+      ],
+      "id": "d1e3578d-3bd1-4e33-b074-97e73c399c63",
+      "name": "Run spark to ndjson",
+      "credentials": {
+        "sshPrivateKey": {
+          "id": "xm2ZPfPGfUHMrRyL",
+          "name": "SSH Vagrant"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "authentication": "privateKey",
+        "command": "bash -lc '\nset -Eeuo pipefail\n\njava -jar /usr/local/kv/lib/kvstore.jar runadmin -host localhost -port 5000 <<'\"'\"'EOF'\"'\"'\nconnect store -name kvstore;\nexecute '\\''drop table pages'\\'';\n\nexecute \"CREATE TABLE IF NOT EXISTS pages (\n  id STRING, \n  created_at STRING,       \n  url STRING,                \n  title STRING,              \n  doc JSON,                  \n  PRIMARY KEY(id)\n)\";\nexecute \"CREATE INDEX IF NOT EXISTS ix_pages_rev ON pages(url)\";\nshow tables;\nshow table -name pages;\nEOF\n'\n"
+      },
+      "type": "n8n-nodes-base.ssh",
+      "typeVersion": 1,
+      "position": [
+        4736,
+        480
+      ],
+      "id": "42b35fd9-a9eb-42b6-a624-f0f165b686a3",
+      "name": "Ensure table page NOSQL",
+      "credentials": {
+        "sshPrivateKey": {
+          "id": "xm2ZPfPGfUHMrRyL",
+          "name": "SSH Vagrant"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "3d373e79-3998-49eb-9bc5-7acfbb130aa5",
+              "name": "impAttempt",
+              "value": 0,
+              "type": "number"
+            },
+            {
+              "id": "debd89bf-cf0e-4a99-9b7d-1db96a3ecc3c",
+              "name": "impMaxAttempt",
+              "value": 4,
+              "type": "number"
+            },
+            {
+              "id": "af4bf588-325b-410d-881e-44851097c00c",
+              "name": "impBaseMs",
+              "value": 3000,
+              "type": "number"
+            },
+            {
+              "id": "1791f495-62c1-4fa6-8fc4-105927df1e10",
+              "name": "impMaxMs",
+              "value": 25000,
+              "type": "number"
+            },
+            {
+              "id": "c287d03f-404f-4887-885b-f6223cc31849",
+              "name": "logPath",
+              "value": "={{$('State Get Html').first().json.logPath}}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        5632,
+        464
+      ],
+      "id": "54297ccd-fc47-4aad-95fa-f7f1f96d3fa8",
+      "name": "Import Init1"
+    },
+    {
+      "parameters": {
+        "jsCode": "return $input.all();\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        5792,
+        464
+      ],
+      "id": "5450186e-f70b-4a15-9df1-cbb8caf79eee",
+      "name": "Import State1"
+    },
+    {
+      "parameters": {
+        "authentication": "privateKey",
+        "command": "bash -lc '\nset -Eeuo pipefail\n\nFILE=/vagrant/page/pages.ndjson\nTABLE=pages                              \nHOST=localhost\nPORT=5000\nSTORE_NAME=kvstore\n\n# 0) Source OK (non vide)\nif [ ! -s \"$FILE\" ]; then\n  echo \"IMPORT_SRC_EMPTY:$FILE\" >&2\n  exit 80\nfi\n\n# 1) Import (session unique runadmin)\njava -jar /usr/local/kv/lib/kvstore.jar runadmin -host \"$HOST\" -port \"$PORT\" <<EOF\nconnect store -name $STORE_NAME;\nput table -name $TABLE -file $FILE;\nEOF\n\n# 2) Marqueur de succès (rows planifiées = nb de lignes du JSONL)\necho \"DONE_ROWS=$(wc -l < \"$FILE\")\"\n'\n"
+      },
+      "type": "n8n-nodes-base.ssh",
+      "typeVersion": 1,
+      "position": [
+        6000,
+        464
+      ],
+      "id": "306634ca-1d7c-4365-a706-ac2f5e01025c",
+      "name": "Import1",
+      "credentials": {
+        "sshPrivateKey": {
+          "id": "xm2ZPfPGfUHMrRyL",
+          "name": "SSH Vagrant"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const st = $('Import State1').first().json;\n\nconst attempt     = st.impAttempt ?? 0;\nconst maxAttempt  = st.impMaxAttempt ?? 4;\nconst base        = st.impBaseMs ?? 3000;\nconst maxMs       = st.impMaxMs ?? 25000;\n\nconst code   = $input.first().json.code ?? 0;\nconst out    = `${$input.first().json.stdout || ''}\\n${$input.first().json.stderr || ''}`;\n\n// Erreurs transitoires (admin down / connexion)\nconst transientRe = /(Cannot connect to any admins|Lost connection to Admin|Failed to connect to kvstore|Not Connected)/i;\nconst isTransient = transientRe.test(out);\n\n// Erreurs “data/source”\nconst isSrcEmpty  = /IMPORT_SRC_EMPTY/i.test(out);\nconst isSchemaBad = /IMPORT_SCHEMA_BAD/i.test(out);\n\n// Succès\n// if (code === 0) {\nif(!isTransient) {\n  return [{ json: { ...st, impOk: true, impMsg: out.slice(0, 800) } }];\n}\n\n// Transient -> retry si possible\nif (isTransient && attempt < maxAttempt) {\n  const next = attempt + 1;\n  const waitMs = Math.min(base * (2 ** (next - 1)), maxMs);\n  return [{\n    json: {\n      ...st,\n      impOk: false,\n      impAttempt: next,\n      waitMs,\n      impTag: 'ADMIN_CONN',\n      impMsg: out.slice(0, 800)\n    }\n  }];\n}\n\n// Final (échec non-transient ou max atteint)\nreturn [{\n  json: {\n    ...st,\n    impOk: false,\n    final: true,\n    impTag: isTransient ? 'ADMIN_CONN_MAX'\n          : isSrcEmpty  ? 'IMPORT_SRC_EMPTY'\n          : isSchemaBad ? 'IMPORT_SCHEMA_BAD'\n          : 'IMPORT_ERROR',\n    impMsg: out.slice(0, 1200)\n  }\n}];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        6176,
+        464
+      ],
+      "id": "55c4aa49-a0c7-4e2d-a1ca-d0ec0ef7a276",
+      "name": "Import Decide & Backoff1"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "df76345c-f217-4b55-a2d6-424b99164023",
+              "leftValue": "={{ $json.impOk }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        6384,
+        464
+      ],
+      "id": "159fa0bb-5496-4137-afa6-3f6cf3471056",
+      "name": "Import OK?1"
+    },
+    {
+      "parameters": {
+        "authentication": "privateKey",
+        "command": "=bash -lc 'jq -c -n \\\n  --arg ts \"'\"{{$now}}\"'\" \\\n  --arg stage \"import\" \\\n  --arg event \"success\" \\\n  --arg msg \"{{$json.impMsg}}\" \\\n  \"{\\\"ts\\\":\\$ts,\\\"stage\\\":\\$stage,\\\"event\\\":\\$event,\\\"msg\\\":\\$msg}\" \\\n  >> \"{{$('State Get Html').first().json.logPath}}\"'\n"
+      },
+      "type": "n8n-nodes-base.ssh",
+      "typeVersion": 1,
+      "position": [
+        6624,
+        448
+      ],
+      "id": "839864fa-1b40-4adc-940e-885145e38c55",
+      "name": "Log import success1",
+      "credentials": {
+        "sshPrivateKey": {
+          "id": "xm2ZPfPGfUHMrRyL",
+          "name": "SSH Vagrant"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "db7d3a93-7db6-42e4-be6b-e00246d31a8f",
+              "leftValue": "={{ $json.final }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        6592,
+        736
+      ],
+      "id": "1850e69d-d7c6-4a4c-9de9-cf506c39b074",
+      "name": "Final?3"
+    },
+    {
+      "parameters": {
+        "authentication": "privateKey",
+        "command": "=bash -lc '\ncat <<'\"'\"'EOF'\"'\"' | jq -c -Rrs \\\n  --arg ts \"'\"{{$now}}\"'\" \\\n  --arg stage \"import\" \\\n  --arg event \"error_final\" \\\n  --arg tag \"{{$json.impTag}}\" \\\n  --arg msg \"{{$json.impMsg}}\" \\\n'\"'\"'{ts:$ts,stage:$stage,event:$event,tag:$tag,msg:.}'\"'\"' \\\n   >> \"{{$json.logPath}}\"\n{{$json.impMsg}}\nEOF\n'"
+      },
+      "type": "n8n-nodes-base.ssh",
+      "typeVersion": 1,
+      "position": [
+        6768,
+        624
+      ],
+      "id": "aa80009f-f69f-41e2-b9e3-daf47e811e81",
+      "name": "Log import final_error1"
+    },
+    {
+      "parameters": {
+        "authentication": "privateKey",
+        "command": "=bash -lc 'jq -c -n \\   --arg ts \"'\"{{$now}}\"'\" \\   --arg stage \"import\" \\   --arg event \"retry\" \\   --argjson attempt {{$json.impAttempt || 0}} \\   --argjson waitMs {{$json.waitMs || 0}} \\   --arg tag \"{{$json.impTag || \"\"}}\" \\   --arg msg \"{{$json.impMsg || \"\"}}\" \\   \"{\\\"ts\\\":\\$ts,\\\"stage\\\":\\$stage,\\\"event\\\":\\$event,\\\"attempt\\\":\\$attempt,\\\"waitMs\\\":\\$waitMs,\\\"tag\\\":\\$tag,\\\"msg\\\":\\$msg}\" \\   >> \"{{$('State').first().json.logPath}}\"'"
+      },
+      "type": "n8n-nodes-base.ssh",
+      "typeVersion": 1,
+      "position": [
+        6768,
+        832
+      ],
+      "id": "6b16b65c-e205-4642-bb89-c0ff96c2d151",
+      "name": "Log import retry1"
+    },
+    {
+      "parameters": {
+        "jsCode": "throw new Error('Import failed (final)')"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        6912,
+        624
+      ],
+      "id": "a9da7b07-ec0f-451c-81b1-6b7b18ab678f",
+      "name": "Throw Import error1"
+    },
+    {
+      "parameters": {
+        "amount": "={{$json.waitMs/1000;}}"
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        6144,
+        752
+      ],
+      "id": "7c2ba1d3-2af1-4c67-940b-bae8f534819a",
+      "name": "Wait4",
+      "webhookId": "09e44890-13c5-4386-b9dd-a8e08602e876"
+    },
+    {
+      "parameters": {
+        "jsCode": "return items.map((item, i) => {\n  item.json.index = i;\n  return item;\n});\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        320,
+        400
+      ],
+      "id": "f8716ad1-3999-4776-b7aa-71bfb397be64",
+      "name": "Code1"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "6b60011d-527a-4c6b-b6f2-e841238cbe49",
+              "leftValue": "={{ $('Page').item.json.index }}",
+              "rightValue": 0,
+              "operator": {
+                "type": "number",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        3232,
+        480
+      ],
+      "id": "1adae2fa-4d0d-48a0-9bbe-b1f8b9544bb7",
+      "name": "If2"
+    },
+    {
+      "parameters": {
+        "authentication": "privateKey",
+        "command": "> /vagrant/page/raw_pages.jsonl"
+      },
+      "type": "n8n-nodes-base.ssh",
+      "typeVersion": 1,
+      "position": [
+        3408,
+        416
+      ],
+      "id": "7ce2298f-6784-40bf-a54b-00c50b8b8c70",
+      "name": "Init list",
+      "credentials": {
+        "sshPrivateKey": {
+          "id": "xm2ZPfPGfUHMrRyL",
+          "name": "SSH Vagrant"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $('Init').item.json.httpPath }}",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "url",
+              "value": "={{ $('Page').item.json.url }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1856,
+        464
+      ],
+      "id": "d3947b27-ba03-4728-b7f3-c0596f6f83ae",
+      "name": "HTTP Get Html",
+      "retryOnFail": true,
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "amount": "={{$json.waitMs/1000;}}"
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        7584,
+        656
+      ],
+      "id": "87875d52-52cf-43d1-bec2-4fc6e1bb01e3",
+      "name": "Wait5",
+      "webhookId": "6d81925f-1e23-42ff-92b4-3dae21fbff3e"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        7888,
+        640
+      ],
+      "id": "245c7b76-c963-43e4-9e6e-d9a7fae0af5c",
+      "name": "Merge5"
+    },
+    {
+      "parameters": {
+        "jsCode": "if($('HTTP Update Milvus final').first().json.softFailHTTP){ \n  throw new Error('HTTP app failed')\n}"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        8336,
+        592
+      ],
+      "id": "cff4a5cd-e474-406c-9bba-3d33f54017d3",
+      "name": "Throw FailHttp1"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "74030ae9-1eb0-4f7a-ac7c-ef69670e9d54",
+              "name": "logPath",
+              "value": "=/vagrant/logs/page_workflow.jsonl",
+              "type": "string"
+            },
+            {
+              "id": "81a32be8-065d-46a5-ac5e-a54fa04965ba",
+              "name": "httpHost",
+              "value": "http://host.docker.internal",
+              "type": "string"
+            },
+            {
+              "id": "714607a1-6e0f-4143-95eb-88dfb194c959",
+              "name": "httpPort",
+              "value": "8000",
+              "type": "string"
+            },
+            {
+              "id": "5b261f04-df04-4acd-a56e-7f6afa71fd4f",
+              "name": "httpPath",
+              "value": "/v1/pages_milvus",
+              "type": "string"
+            },
+            {
+              "id": "bcf1dcb0-beb8-4bef-b177-a1f3ba58483f",
+              "name": "httpMethod",
+              "value": "POST",
+              "type": "string"
+            },
+            {
+              "id": "5684ca7d-50f8-4262-8afe-17f4a05210ac",
+              "name": "softFailHTTP",
+              "value": true,
+              "type": "boolean"
+            },
+            {
+              "id": "5cbabfe4-3b35-44a2-bd00-bb4a43d306ec",
+              "name": "baseMs",
+              "value": 2000,
+              "type": "number"
+            },
+            {
+              "id": "34b4feb7-ddf2-4288-80c2-9118231a896e",
+              "name": "maxMs",
+              "value": 20000,
+              "type": "number"
+            },
+            {
+              "id": "9a606cad-ef3d-4b73-bbc4-23b8e390565a",
+              "name": "maxAttempt",
+              "value": 2,
+              "type": "number"
+            },
+            {
+              "id": "9e9ee060-d7b0-48f5-aa6c-2f07bf0876f1",
+              "name": "attempt",
+              "value": 0,
+              "type": "number"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        7120,
+        448
+      ],
+      "id": "008d9e07-1c1e-414d-9ca6-837eb0b8f820",
+      "name": "Init Update Milvus"
+    },
+    {
+      "parameters": {
+        "jsCode": "return $input.all();"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        7328,
+        448
+      ],
+      "id": "9a191183-e646-46e5-a684-db10fb175757",
+      "name": "Update Milvus State"
+    },
+    {
+      "parameters": {
+        "method": "={{ $('Update Milvus State').first().json.httpMethod }}",
+        "url": "={{ $('Update Milvus State').first().json.httpHost + ':' + $('Update Milvus State').first().json.httpPort + $('Update Milvus State').first().json.httpPath }}",
+        "options": {
+          "timeout": 1800000
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        7600,
+        448
+      ],
+      "id": "f0818659-9c52-497c-852c-9ac7297aff85",
+      "name": "HTTP Update Milvus",
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "jsCode": "const st = $('Update Milvus State').first().json;\nconst stage = 'post_http';\nconst attempt = st.attempt ?? 0;\nconst maxA = st.maxAttempt ?? 4;\nconst base = st.baseMs ?? 2000;\nconst maxMs = st.maxMs ?? 20000;\n\nconst inItem = $input.first().json;\nconst status = inItem.statusCode ?? inItem.status ?? 0;\nconst isJsonErr = !!(inItem && inItem.error);\nconst code = inItem.code;\nconst ok = (code >= 200 && code < 300) && !isJsonErr;\n\n// Success\nif (ok) return [{ json: { ...st, attempt: 0, stage, ok: true, status, next: 'post2' } }];\n\n// Retry ?\nif (attempt < maxA) {\n  const next = attempt + 1;\n  const waitMs = Math.min(base * (2 ** (next - 1)), maxMs);\n  return [{ json: { ...st, attempt: next, stage, ok: false, waitMs, tag: `HTTP_${status||'ERR'}`, next: 'http' } }];\n}\n\n// Final\nreturn [{ json: { ...st, stage, ok: false, final: true, tag: `HTTP_${status||'ERR'}`, next: null } }];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        7856,
+        448
+      ],
+      "id": "6555b0a3-806e-4c8c-a420-a49159cafd62",
+      "name": "HTTP Update Milvus Decide & Backoff"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "85a59678-a011-4285-9925-9a73f1dba57d",
+              "leftValue": "={{ $json.ok }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        8048,
+        448
+      ],
+      "id": "8ac50a85-aee8-4379-8b23-afd5e6770d13",
+      "name": "HTTP Update Milvus OK?"
+    },
+    {
+      "parameters": {
+        "authentication": "privateKey",
+        "command": "=bash -lc '\ncat <<'\"'\"'EOF'\"'\"' | jq -c -Rrs \\\n  --arg ts \"'\"{{$now}}\"'\" \\\n  --arg stage \"http update milvus\" \\\n  --arg event \"success\" \\\n  '\"'\"'{ts:$ts,stage:$stage,event:$event,msg:.}'\"'\"' \\\n  >> \"{{$('Update Milvus State').first().json.logPath}}\"\n{{$json.msg}}\nEOF\n'"
+      },
+      "type": "n8n-nodes-base.ssh",
+      "typeVersion": 1,
+      "position": [
+        8256,
+        368
+      ],
+      "id": "fdc1edd0-4b94-49b3-aec3-beeb38f4c0cd",
+      "name": "Log http update milvus success",
+      "credentials": {
+        "sshPrivateKey": {
+          "id": "xm2ZPfPGfUHMrRyL",
+          "name": "SSH Vagrant"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "authentication": "privateKey",
+        "command": "=bash -lc '\ncat <<'\"'\"'EOF'\"'\"' | jq -c -Rrs \\\n  --arg ts \"'\"{{$now}}\"'\" \\\n  --arg stage \"post1\" \\\n  --arg event \"retry\" \\\n  --argjson attempt {{$('Update Milvus State').first().json.attempt || 0}} \\\n  --argjson waitMs {{$json.waitMs || 0}} \\\n  --arg tag \"{{$json.tag || \"\"}}\" \\\n  '\"'\"'{ts:$ts,stage:$stage,event:$event,attempt:$attempt,waitMs:$waitMs,tag:$tag,msg:.}'\"'\"' \\\n  >> \"{{$('Update Milvus State').first().json.logPath}}\"\n{{$json.msg}}\nEOF\n'\n"
+      },
+      "type": "n8n-nodes-base.ssh",
+      "typeVersion": 1,
+      "position": [
+        8336,
+        736
+      ],
+      "id": "ecbf6a06-670a-4dfb-833f-54127dac8308",
+      "name": "Log http update milvus retry",
+      "alwaysOutputData": false,
+      "credentials": {
+        "sshPrivateKey": {
+          "id": "xm2ZPfPGfUHMrRyL",
+          "name": "SSH Vagrant"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "d51b3d2e-bbfa-4134-8b44-5fb546697a68",
+              "leftValue": "={{ $json.final }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        8112,
+        640
+      ],
+      "id": "a85c3d24-4c05-4062-9aa1-512bd797ff67",
+      "name": "HTTP Update Milvus final"
+    },
+    {
+      "parameters": {
+        "content": "# Mise à jour des données dans Milvus",
+        "height": 640,
+        "width": 1424,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        7088,
+        336
+      ],
+      "typeVersion": 1,
+      "id": "bf2788de-bfa3-4410-8288-12f59d8f2082",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "# Importation des données dans NoSQL",
+        "height": 640,
+        "width": 1424,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        5616,
+        336
+      ],
+      "typeVersion": 1,
+      "id": "cddc9848-231d-4921-9edf-90ad7f1ed9da",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "content": "# Validation table NoSQL",
+        "height": 624,
+        "width": 1392,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        4176,
+        352
+      ],
+      "typeVersion": 1,
+      "id": "1c0d5c25-5be2-4d05-bc0c-06c39d8a63d8",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "content": "# Itération des pages & Récupération du contenu HTML",
+        "height": 720,
+        "width": 2304,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        448,
+        240
+      ],
+      "typeVersion": 1,
+      "id": "6167ac5b-9331-4c1c-a64b-f7806670c7d6",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "content": "# Nettoyage & Sauvegarde des données",
+        "height": 576,
+        "width": 1056,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        2832,
+        336
+      ],
+      "typeVersion": 1,
+      "id": "2774ed6f-b463-47b3-ae1c-7cf06fe4fa10",
+      "name": "Sticky Note4"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Init",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Page": {
+      "main": [
+        [
+          {
+            "node": "Init state Get Html",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Page": {
+      "main": [
+        [
+          {
+            "node": "Run spark to ndjson",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Page",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Init": {
+      "main": [
+        [
+          {
+            "node": "To list",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "To list": {
+      "main": [
+        [
+          {
+            "node": "Code1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Decide & Backoff Get Html": {
+      "main": [
+        [
+          {
+            "node": "OK?1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "State Get Html": {
+      "main": [
+        [
+          {
+            "node": "If1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Init state Get Html": {
+      "main": [
+        [
+          {
+            "node": "State Get Html",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OK?1": {
+      "main": [
+        [
+          {
+            "node": "Log success1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Final?2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Log success1": {
+      "main": [
+        [
+          {
+            "node": "Append log success1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Final?2": {
+      "main": [
+        [
+          {
+            "node": "Log final_fail1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Backoff wait1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Backoff wait1": {
+      "main": [
+        [
+          {
+            "node": "State Get Html",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Log attempt_start1": {
+      "main": [
+        [
+          {
+            "node": "Append log attempt_retry1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Log retry1": {
+      "main": [
+        [
+          {
+            "node": "Append log attempt_retry1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If1": {
+      "main": [
+        [
+          {
+            "node": "Log attempt_start1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Log retry1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append log attempt_retry1": {
+      "main": [
+        [
+          {
+            "node": "HTTP Get Html",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append log success1": {
+      "main": [
+        [
+          {
+            "node": "Page Object",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Log final_fail1": {
+      "main": [
+        [
+          {
+            "node": "Append log final_fail1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append log final_fail1": {
+      "main": [
+        [
+          {
+            "node": "No Operation, do nothing1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Page Object": {
+      "main": [
+        [
+          {
+            "node": "Extract content",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract content": {
+      "main": [
+        [
+          {
+            "node": "If2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Clean for insert": {
+      "main": [
+        [
+          {
+            "node": "Convert to File1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Convert to File1": {
+      "main": [
+        [
+          {
+            "node": "Write data to file",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Write data to file": {
+      "main": [
+        [
+          {
+            "node": "Loop Page",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Init DDL state1": {
+      "main": [
+        [
+          {
+            "node": "DDL State1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "DDL State1": {
+      "main": [
+        [
+          {
+            "node": "Ensure table page NOSQL",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "DDL Decide & Backoff1": {
+      "main": [
+        [
+          {
+            "node": "DDL ok ?1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If DDL final_error1": {
+      "main": [
+        [
+          {
+            "node": "Log DDL final_error1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Log DDL retry1",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "DDL State1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "DDL ok ?1": {
+      "main": [
+        [
+          {
+            "node": "Log DDL success1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "If DDL final_error1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Run spark to ndjson": {
+      "main": [
+        [
+          {
+            "node": "Init DDL state1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Ensure table page NOSQL": {
+      "main": [
+        [
+          {
+            "node": "DDL Decide & Backoff1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Import Init1": {
+      "main": [
+        [
+          {
+            "node": "Import State1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Import State1": {
+      "main": [
+        [
+          {
+            "node": "Import1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Import1": {
+      "main": [
+        [
+          {
+            "node": "Import Decide & Backoff1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Import Decide & Backoff1": {
+      "main": [
+        [
+          {
+            "node": "Import OK?1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Import OK?1": {
+      "main": [
+        [
+          {
+            "node": "Log import success1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Final?3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Final?3": {
+      "main": [
+        [
+          {
+            "node": "Log import final_error1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Log import retry1",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Wait4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Log import final_error1": {
+      "main": [
+        [
+          {
+            "node": "Throw Import error1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait4": {
+      "main": [
+        [
+          {
+            "node": "Import State1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Log DDL success1": {
+      "main": [
+        [
+          {
+            "node": "Import Init1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code1": {
+      "main": [
+        [
+          {
+            "node": "Loop Page",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If2": {
+      "main": [
+        [
+          {
+            "node": "Init list",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Clean for insert",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Init list": {
+      "main": [
+        [
+          {
+            "node": "Clean for insert",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Get Html": {
+      "main": [
+        [
+          {
+            "node": "Decide & Backoff Get Html",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait5": {
+      "main": [
+        [
+          {
+            "node": "Update Milvus State",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge5": {
+      "main": [
+        [
+          {
+            "node": "Wait5",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Log import success1": {
+      "main": [
+        [
+          {
+            "node": "Init Update Milvus",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Init Update Milvus": {
+      "main": [
+        [
+          {
+            "node": "Update Milvus State",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update Milvus State": {
+      "main": [
+        [
+          {
+            "node": "HTTP Update Milvus",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Update Milvus": {
+      "main": [
+        [
+          {
+            "node": "HTTP Update Milvus Decide & Backoff",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Update Milvus Decide & Backoff": {
+      "main": [
+        [
+          {
+            "node": "HTTP Update Milvus OK?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Update Milvus OK?": {
+      "main": [
+        [
+          {
+            "node": "Log http update milvus success",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "HTTP Update Milvus final",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Log http update milvus retry": {
+      "main": [
+        [
+          {
+            "node": "Merge5",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "HTTP Update Milvus final": {
+      "main": [
+        [
+          {
+            "node": "Throw FailHttp1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Log http update milvus retry",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Merge5",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "saveExecutionProgress": false,
+    "callerPolicy": "workflowsFromSameOwner"
+  },
+  "versionId": "07791374-1bdb-4213-b2db-12cf1a2c3291",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "6a350d075c6ab0d133f05a633442564120ee047b080709f9c00c75374ccaed0e"
+  },
+  "id": "RaEpZTqRFrOgUb2g",
+  "tags": []
+}
