@@ -1,0 +1,340 @@
+04258211665b474dbe6fd9107fba52d6	De SAHI Anosy-MUS formulaire ménage
+04258211665b474dbe6fd9107fba52d6	Contexte
+04258211665b474dbe6fd9107fba52d6	Site Ménage
+04258211665b474dbe6fd9107fba52d6	Sites liés
+04258211665b474dbe6fd9107fba52d6	Communauté
+04258211665b474dbe6fd9107fba52d6	Dans quelle communauté ce ménage fait-il partie ?
+04258211665b474dbe6fd9107fba52d6	Limite administrative
+04258211665b474dbe6fd9107fba52d6	Région
+04258211665b474dbe6fd9107fba52d6	District
+04258211665b474dbe6fd9107fba52d6	Commune
+04258211665b474dbe6fd9107fba52d6	Le commune n'est pas trouvé sur la liste des limites administratives
+04258211665b474dbe6fd9107fba52d6	Quel est le nom du commune ?
+04258211665b474dbe6fd9107fba52d6	Milieu de résidence
+04258211665b474dbe6fd9107fba52d6	Urbain
+04258211665b474dbe6fd9107fba52d6	Rural
+04258211665b474dbe6fd9107fba52d6	Fokontany
+04258211665b474dbe6fd9107fba52d6	Date de l'enquête
+04258211665b474dbe6fd9107fba52d6	<**REMARQUE: L'enquêteur doit lire ce texte tel qu’il est rédigé**>
+04258211665b474dbe6fd9107fba52d6	Puis-je commencer maintenant ?
+04258211665b474dbe6fd9107fba52d6	Si OUI, commencer l'entretien, Si non, arrêter l'entretien.
+04258211665b474dbe6fd9107fba52d6	Oui
+04258211665b474dbe6fd9107fba52d6	Non
+04258211665b474dbe6fd9107fba52d6	**Note:** Le consentement ne peut être obtenu que si la personne interrogée est âgée de 18 ans ou plus. Pour les moins de 18 ans, l'assentiment de la personne interrogée et le consentement du parent ou du tuteur sont nécessaires. Si le consentement/l'assentiment n'est pas obtenu, l'entretien ne doit pas commencer.
+04258211665b474dbe6fd9107fba52d6	CARACTERISTIQUES SOCIODEMOGRAPHIQUES ET ECONOMIQUES DES MENAGES
+04258211665b474dbe6fd9107fba52d6	Qui a répondu au questionnaire ?
+04258211665b474dbe6fd9107fba52d6	Chef de ménage
+04258211665b474dbe6fd9107fba52d6	Le ou la Conjoint(e)
+04258211665b474dbe6fd9107fba52d6	Other (please specify)
+04258211665b474dbe6fd9107fba52d6	CARACTERISTIQUES SOCIODEMOGRAPHIQUES ET ECONOMIQUES DES INDIVIDUS
+04258211665b474dbe6fd9107fba52d6	  Tout d'abord, dites-moi SVP le nom de chaque personne qui vit habituellement ici, en commençant par le chef de ménage.
+04258211665b474dbe6fd9107fba52d6	  Quel est le lien de parenté de (nom) avec (nom du chef de ménage) ?
+04258211665b474dbe6fd9107fba52d6	CM
+04258211665b474dbe6fd9107fba52d6	Conjoint (e)
+04258211665b474dbe6fd9107fba52d6	Fils/Fille
+04258211665b474dbe6fd9107fba52d6	Other (please specify)
+04258211665b474dbe6fd9107fba52d6	Est-ce que (nom) est de sexe masculin ou féminin ?
+04258211665b474dbe6fd9107fba52d6	Homme
+04258211665b474dbe6fd9107fba52d6	Femme
+04258211665b474dbe6fd9107fba52d6	Quel âge a (nom) ?
+04258211665b474dbe6fd9107fba52d6	Enregistrer en années révolues.
+04258211665b474dbe6fd9107fba52d6	 Quel est le niveau d’éducation du CM ?
+04258211665b474dbe6fd9107fba52d6	Cette question est à poser pour les personnes âgées de 3 ans ou plus
+04258211665b474dbe6fd9107fba52d6	Sans niveau
+04258211665b474dbe6fd9107fba52d6	Primaire
+04258211665b474dbe6fd9107fba52d6	Secondaire I
+04258211665b474dbe6fd9107fba52d6	Secondaire II ou plus
+04258211665b474dbe6fd9107fba52d6	  Quel est le statut matrimonial du (nom) ?
+04258211665b474dbe6fd9107fba52d6	Cette question est à poser pour les personnes âgées de 12 ans ou plus
+04258211665b474dbe6fd9107fba52d6	Célibataire
+04258211665b474dbe6fd9107fba52d6	Marié (e)
+04258211665b474dbe6fd9107fba52d6	Divorcé (e) / Séparé(e)
+04258211665b474dbe6fd9107fba52d6	Veuf (ve)
+04258211665b474dbe6fd9107fba52d6	 Au cours des 30 derniers jours, (nom) a-t-il/elle effectué un travail en échange d’un salaire, d’un traitement, d’une commission, de pourboires ou de tout autre forme de rémunération, même pour 1 heure seulement ?
+04258211665b474dbe6fd9107fba52d6	Cette question est à poser pour les personnes âgées de 15 ans ou plus.
+04258211665b474dbe6fd9107fba52d6	Oui
+04258211665b474dbe6fd9107fba52d6	Non
+04258211665b474dbe6fd9107fba52d6	 Même si vous n'avez pas travaillé au cours des 30 derniers jours, avez-vous un emploi permanent ?
+04258211665b474dbe6fd9107fba52d6	Oui
+04258211665b474dbe6fd9107fba52d6	Non
+04258211665b474dbe6fd9107fba52d6	Quel était la profession principale de (nom) ?
+04258211665b474dbe6fd9107fba52d6	Agriculteur/Eleveur
+04258211665b474dbe6fd9107fba52d6	Enseignant
+04258211665b474dbe6fd9107fba52d6	Médecin
+04258211665b474dbe6fd9107fba52d6	Militaire
+04258211665b474dbe6fd9107fba52d6	Vendeur/Vendeuse
+04258211665b474dbe6fd9107fba52d6	Other (please specify)
+04258211665b474dbe6fd9107fba52d6	Quel est la situation de (nom) dans l’activité exercée ?
+04258211665b474dbe6fd9107fba52d6	Indépendant
+04258211665b474dbe6fd9107fba52d6	Employeur
+04258211665b474dbe6fd9107fba52d6	Salarié public
+04258211665b474dbe6fd9107fba52d6	Salarié privé
+04258211665b474dbe6fd9107fba52d6	Travailleur à la tâche
+04258211665b474dbe6fd9107fba52d6	Apprenti
+04258211665b474dbe6fd9107fba52d6	Travailleur familial
+04258211665b474dbe6fd9107fba52d6	Other (please specify)
+04258211665b474dbe6fd9107fba52d6	Quel est votre statut dans cette activité ?
+04258211665b474dbe6fd9107fba52d6	Permanent
+04258211665b474dbe6fd9107fba52d6	Temporaire
+04258211665b474dbe6fd9107fba52d6	Quelle est la périodicité de paiement de votre rémunération ?
+04258211665b474dbe6fd9107fba52d6	Journalière
+04258211665b474dbe6fd9107fba52d6	Hebdomadaire
+04258211665b474dbe6fd9107fba52d6	Mensuelle
+04258211665b474dbe6fd9107fba52d6	Combien gagne (nom) pour cette activité (en Ariary)?
+04258211665b474dbe6fd9107fba52d6	Ar
+04258211665b474dbe6fd9107fba52d6	Est-ce que (nom) a eu d’autre activité au cours des 30 derniers jours ?
+04258211665b474dbe6fd9107fba52d6	Il faut reposer cette question au cas où l’individu d’autre activité
+04258211665b474dbe6fd9107fba52d6	Oui
+04258211665b474dbe6fd9107fba52d6	Non
+04258211665b474dbe6fd9107fba52d6	Combien gagne (nom) pour cette activité (en Ariary)?
+04258211665b474dbe6fd9107fba52d6	Ar
+04258211665b474dbe6fd9107fba52d6	Est-ce que nom verse une partie de ces revenus au ménage-?
+04258211665b474dbe6fd9107fba52d6	Oui
+04258211665b474dbe6fd9107fba52d6	Non
+04258211665b474dbe6fd9107fba52d6	  Combien verse nom au compte du ménage?
+04258211665b474dbe6fd9107fba52d6	Ar
+04258211665b474dbe6fd9107fba52d6	Personne : {0}
+04258211665b474dbe6fd9107fba52d6	Est-ce que le ménage a reçu d’autre argent de la part d’un tiers ?
+04258211665b474dbe6fd9107fba52d6	Oui
+04258211665b474dbe6fd9107fba52d6	Non
+04258211665b474dbe6fd9107fba52d6	Combien le ménage a-t-il reçu de ce tiers ?
+04258211665b474dbe6fd9107fba52d6	Ar
+04258211665b474dbe6fd9107fba52d6	Dépense de ménage
+04258211665b474dbe6fd9107fba52d6	Sélectionnez tout ce qui s'y rapporte. Sélectionnez N/A (sans objet) si le menage n'ont pas des activités liées a ces articles.
+04258211665b474dbe6fd9107fba52d6	Dépenses liée en éducation : Ecolage et/ou frais d'inscription/ cotisation parentale et fournitures scolaires
+04258211665b474dbe6fd9107fba52d6	Dépenses sanitaires (Consultation, médicament, hospitalisation, transport)
+04258211665b474dbe6fd9107fba52d6	Achat d'effets vestimentaires
+04258211665b474dbe6fd9107fba52d6	Achat des équipements pour la cuisine
+04258211665b474dbe6fd9107fba52d6	Achat de nourriture
+04258211665b474dbe6fd9107fba52d6	Achat de combustible
+04258211665b474dbe6fd9107fba52d6	Dépense en eau
+04258211665b474dbe6fd9107fba52d6	Dépense en électricité
+04258211665b474dbe6fd9107fba52d6	Achat des mobiliers / équipements de maison (matelas, bicyclette, moto, téléphone portable, radio, téléphone)
+04258211665b474dbe6fd9107fba52d6	Réparation ou amélioration de la maison
+04258211665b474dbe6fd9107fba52d6	Dépenses d’investissement liées à l’agriculture : Matériels agricoles,  …..
+04258211665b474dbe6fd9107fba52d6	Dépenses en intrants agricoles : semences, engrais, …
+04258211665b474dbe6fd9107fba52d6	Dépenses en mains d’œuvre agricoles
+04258211665b474dbe6fd9107fba52d6	Autre dépense
+04258211665b474dbe6fd9107fba52d6	Est-ce qu'un membre du ménage a dépensé de l'argent pour …[ARTICLE]… durant les 30 derniers jours ?
+04258211665b474dbe6fd9107fba52d6	Oui
+04258211665b474dbe6fd9107fba52d6	Non
+04258211665b474dbe6fd9107fba52d6	N/A
+04258211665b474dbe6fd9107fba52d6	Combien le ménage a dépensé au total pour ...[ARTICLE/ DÉPENSE au cours des 30 derniers jours? (En ariary)
+04258211665b474dbe6fd9107fba52d6	Ar
+04258211665b474dbe6fd9107fba52d6	Le ménage a-t-il des épargnes (Banque, institution de micro-finance, mobile banking, thésaurisation) ?
+04258211665b474dbe6fd9107fba52d6	Oui
+04258211665b474dbe6fd9107fba52d6	Non
+04258211665b474dbe6fd9107fba52d6	Au cours de 30 derniers jours, quel est le montant total que le ménage a affecté à l'épargne ? (en ARIARY)
+04258211665b474dbe6fd9107fba52d6	Ar
+04258211665b474dbe6fd9107fba52d6	 APPROVISIONNEMENT EN EAU
+04258211665b474dbe6fd9107fba52d6	D’où provient principalement l’eau que les membres de votre ménage utilisent ?
+04258211665b474dbe6fd9107fba52d6	**Définitions des types de point d'eau :**
+04258211665b474dbe6fd9107fba52d6	Forage
+04258211665b474dbe6fd9107fba52d6	Borne Fontaine
+04258211665b474dbe6fd9107fba52d6	Kiosque
+04258211665b474dbe6fd9107fba52d6	puits creusé à mains avec une pompe (l'interieur n'est pas visible)
+04258211665b474dbe6fd9107fba52d6	Puits Protégé
+04258211665b474dbe6fd9107fba52d6	puits creusé à mains ou puits traditionnel (l'interieur est visible)
+04258211665b474dbe6fd9107fba52d6	Puits non protégé
+04258211665b474dbe6fd9107fba52d6	Source protégée
+04258211665b474dbe6fd9107fba52d6	Source non protégée
+04258211665b474dbe6fd9107fba52d6	Barrage de sable (sand dam)
+04258211665b474dbe6fd9107fba52d6	REEPS (Réservoir d'eau enterré plein de sable)
+04258211665b474dbe6fd9107fba52d6	Branchement à l'intérieur d'un logement ou d'une institution
+04258211665b474dbe6fd9107fba52d6	Branchement dans le lotissement dans la cour ou sur la parcelle
+04258211665b474dbe6fd9107fba52d6	Collecte des eaux de pluie
+04258211665b474dbe6fd9107fba52d6	Camion-citerne
+04258211665b474dbe6fd9107fba52d6	(rivière, ruisseau, barrage, lac, étang, canal, canal d’irrigation)
+04258211665b474dbe6fd9107fba52d6	Eaux de surface
+04258211665b474dbe6fd9107fba52d6	Veuillez préciser
+04258211665b474dbe6fd9107fba52d6	Autres
+04258211665b474dbe6fd9107fba52d6	Ce point d'eau est-il lié a un MUS ?
+04258211665b474dbe6fd9107fba52d6	Oui
+04258211665b474dbe6fd9107fba52d6	Non
+04258211665b474dbe6fd9107fba52d6	Avez-vous accès au point d’eau qui se situe ?
+04258211665b474dbe6fd9107fba52d6	Oui
+04258211665b474dbe6fd9107fba52d6	Non
+04258211665b474dbe6fd9107fba52d6	Accès
+04258211665b474dbe6fd9107fba52d6	Quel est le principal usage de cette source ?
+04258211665b474dbe6fd9107fba52d6	Consommation
+04258211665b474dbe6fd9107fba52d6	Lessive
+04258211665b474dbe6fd9107fba52d6	Agriculture
+04258211665b474dbe6fd9107fba52d6	Elevage
+04258211665b474dbe6fd9107fba52d6	Other (please specify)
+04258211665b474dbe6fd9107fba52d6	Combien de temps faut-il aux membres de ce ménage pour aller à la source de l’eau, prendre de l’eau et revenir ?
+04258211665b474dbe6fd9107fba52d6	Minutes
+04258211665b474dbe6fd9107fba52d6	Qui va habituellement à la source pour collecter de l’eau pour votre ménage ?
+04258211665b474dbe6fd9107fba52d6	Membre de ménage
+04258211665b474dbe6fd9107fba52d6	Autre non membre
+04258211665b474dbe6fd9107fba52d6	Depuis (jour de la semaine) dernier, combien de fois cette personne est-elle allée collecter de l’eau ?
+04258211665b474dbe6fd9107fba52d6	Combien de litre d’eau en moyenne le ménage a-t-il collecté par jour ?
+04258211665b474dbe6fd9107fba52d6	Combien le ménage a-t-il payé pour ce volume ?
+04258211665b474dbe6fd9107fba52d6	Prix de service en Ar
+04258211665b474dbe6fd9107fba52d6	Volumetrique (par mois)
+04258211665b474dbe6fd9107fba52d6	Forfaitaire
+04258211665b474dbe6fd9107fba52d6	  Combien le ménage dépense-t-il pour un bidon d’eau ?
+04258211665b474dbe6fd9107fba52d6	Ce prix convient-il au ménage ?
+04258211665b474dbe6fd9107fba52d6	Oui
+04258211665b474dbe6fd9107fba52d6	Non
+04258211665b474dbe6fd9107fba52d6	Quel prix proposez-vous pour un bidon d'eau ?
+04258211665b474dbe6fd9107fba52d6	Ar
+04258211665b474dbe6fd9107fba52d6	Quel sont les raisons qui poussent le ménage à utiliser ce MUS ?
+04258211665b474dbe6fd9107fba52d6	Prix abordable
+04258211665b474dbe6fd9107fba52d6	Accessibilité du MUS
+04258211665b474dbe6fd9107fba52d6	Bonne qualité de l’infrastructure
+04258211665b474dbe6fd9107fba52d6	Qualité de l’eau acceptable
+04258211665b474dbe6fd9107fba52d6	Service offert du gestionnaire du MUS satisfaisant
+04258211665b474dbe6fd9107fba52d6	Other (please specify)
+04258211665b474dbe6fd9107fba52d6	Avez-vous l’intention d’utiliser ce point d’eau MUS ?
+04258211665b474dbe6fd9107fba52d6	Oui
+04258211665b474dbe6fd9107fba52d6	Non
+04258211665b474dbe6fd9107fba52d6	  Combien êtes-vous prêt à payer pour consommer un bidon d'eau à ce MUS ?
+04258211665b474dbe6fd9107fba52d6	Ar
+04258211665b474dbe6fd9107fba52d6	Est-ce que le ménage est disponible à adhérer au changement au cas où des améliorations seront apportées au point d’eau MUS ?
+04258211665b474dbe6fd9107fba52d6	Oui
+04258211665b474dbe6fd9107fba52d6	Non
+04258211665b474dbe6fd9107fba52d6	Quel sont les raisons qui empêche le ménage à utiliser ce MUS ?
+04258211665b474dbe6fd9107fba52d6	Etat de l’infrastructure
+04258211665b474dbe6fd9107fba52d6	Gestion de service d’eau
+04258211665b474dbe6fd9107fba52d6	Qualité de l’eau
+04258211665b474dbe6fd9107fba52d6	Quantité de l’eau fournie
+04258211665b474dbe6fd9107fba52d6	Other (please specify)
+04258211665b474dbe6fd9107fba52d6	Est-ce que le ménage est prêt à bénéficier du point d’eau MUS si des améliorations seraient apportées ?
+04258211665b474dbe6fd9107fba52d6	Oui
+04258211665b474dbe6fd9107fba52d6	Non
+04258211665b474dbe6fd9107fba52d6	Non
+04258211665b474dbe6fd9107fba52d6	La distance entre le GPS du site et ce de l'appareil mobile durant l'enquête
+04258211665b474dbe6fd9107fba52d6	GPS difference (m)
+04258211665b474dbe6fd9107fba52d6	Précision
+04258211665b474dbe6fd9107fba52d6	Ajouter
+04258211665b474dbe6fd9107fba52d6	Remplacement de l'administrateur
+04258211665b474dbe6fd9107fba52d6	Paramètres de localisation avancés ...
+04258211665b474dbe6fd9107fba52d6	Altitude
+04258211665b474dbe6fd9107fba52d6	Altitude (m)
+04258211665b474dbe6fd9107fba52d6	Précision d'altitude
+04258211665b474dbe6fd9107fba52d6	Répondu
+04258211665b474dbe6fd9107fba52d6	Approuvé
+04258211665b474dbe6fd9107fba52d6	Arrière
+04258211665b474dbe6fd9107fba52d6	La lecture de codes-barres n'est pas prise en charge sur cette plate-forme
+04258211665b474dbe6fd9107fba52d6	Calculs
+04258211665b474dbe6fd9107fba52d6	Annuler
+04258211665b474dbe6fd9107fba52d6	Annuler le GPS
+04258211665b474dbe6fd9107fba52d6	Impossible d'accéder aux données pour cette question. Veuillez contacter votre administrateur.
+04258211665b474dbe6fd9107fba52d6	Impossible de définir l'emplacement
+04258211665b474dbe6fd9107fba52d6	Modifier la sélection
+04258211665b474dbe6fd9107fba52d6	Effacer
+04258211665b474dbe6fd9107fba52d6	Effacer la sélection
+04258211665b474dbe6fd9107fba52d6	Cliquez sur + Ajouter pour ajouter un élément
+04258211665b474dbe6fd9107fba52d6	Cliquez sur les compartiments pour changer de couleur
+04258211665b474dbe6fd9107fba52d6	Fermer
+04258211665b474dbe6fd9107fba52d6	Commentaires
+04258211665b474dbe6fd9107fba52d6	Les réponses confidentielles ne peuvent pas être modifiées.
+04258211665b474dbe6fd9107fba52d6	Localisation actuelle
+04258211665b474dbe6fd9107fba52d6	Les données sont stockées dans {0}
+04258211665b474dbe6fd9107fba52d6	Profondeur
+04258211665b474dbe6fd9107fba52d6	Profondeur (m)
+04258211665b474dbe6fd9107fba52d6	Jeter
+04258211665b474dbe6fd9107fba52d6	Je ne sais pas
+04258211665b474dbe6fd9107fba52d6	Brouillon
+04258211665b474dbe6fd9107fba52d6	Brouillon
+04258211665b474dbe6fd9107fba52d6	E
+04258211665b474dbe6fd9107fba52d6	Éditer
+04258211665b474dbe6fd9107fba52d6	Modifier la sélection
+04258211665b474dbe6fd9107fba52d6	Édité
+04258211665b474dbe6fd9107fba52d6	Soit le site a été supprimé, soit vous n'êtes pas autorisé à le consulter
+04258211665b474dbe6fd9107fba52d6	Entrez les coordonnées manuellement ...
+04258211665b474dbe6fd9107fba52d6	Erreur
+04258211665b474dbe6fd9107fba52d6	Erreur lors de l'enregistrement des données
+04258211665b474dbe6fd9107fba52d6	Erreur lors du téléchargement du fichier. Vous devez être connecté à Internet pour que le téléchargement d'images fonctionne à partir d'un navigateur Web.
+04258211665b474dbe6fd9107fba52d6	Faux
+04258211665b474dbe6fd9107fba52d6	Final
+04258211665b474dbe6fd9107fba52d6	Bon signal GPS ± {0} m
+04258211665b474dbe6fd9107fba52d6	Catégorie de risque pour la santé basée sur le NPP et l'intervalle de confiance
+04258211665b474dbe6fd9107fba52d6	Masquer les paramètres avancés
+04258211665b474dbe6fd9107fba52d6	Masquer l'historique
+04258211665b474dbe6fd9107fba52d6	Risque élevé / peut-être dangereux
+04258211665b474dbe6fd9107fba52d6	Risque élevé / probablement dangereux
+04258211665b474dbe6fd9107fba52d6	Adresse IP
+04258211665b474dbe6fd9107fba52d6	L'image doit être un fichier jpeg
+04258211665b474dbe6fd9107fba52d6	Sélection incomplète
+04258211665b474dbe6fd9107fba52d6	Risque intermédiaire / probablement sûr
+04258211665b474dbe6fd9107fba52d6	Risque intermédiaire / probablement sûr
+04258211665b474dbe6fd9107fba52d6	Latitude
+04258211665b474dbe6fd9107fba52d6	Latitude hors de portée
+04258211665b474dbe6fd9107fba52d6	Chargement de l'historique ...
+04258211665b474dbe6fd9107fba52d6	Chargement des données de question. Cela peut prendre plusieurs minutes...
+04258211665b474dbe6fd9107fba52d6	Chargement...
+04258211665b474dbe6fd9107fba52d6	Emplacement défini avec succès
+04258211665b474dbe6fd9107fba52d6	Longitude
+04258211665b474dbe6fd9107fba52d6	Longitude hors de portée
+04258211665b474dbe6fd9107fba52d6	Signal GPS faible ± {0} m
+04258211665b474dbe6fd9107fba52d6	Risque faible / sûr
+04258211665b474dbe6fd9107fba52d6	NPP / 100 ml
+04258211665b474dbe6fd9107fba52d6	Hauteur du mât
+04258211665b474dbe6fd9107fba52d6	Hauteur du mât (m)
+04258211665b474dbe6fd9107fba52d6	N
+04258211665b474dbe6fd9107fba52d6	NE
+04258211665b474dbe6fd9107fba52d6	NO
+04258211665b474dbe6fd9107fba52d6	Prochaine
+04258211665b474dbe6fd9107fba52d6	Aucun emplacement défini
+04258211665b474dbe6fd9107fba52d6	Aucune donnée trouvée pour la question. Veuillez vous assurer que vous êtes connecté à Internet pour la première utilisation de ce formulaire.
+04258211665b474dbe6fd9107fba52d6	Aucune image présente
+04258211665b474dbe6fd9107fba52d6	Aucun
+04258211665b474dbe6fd9107fba52d6	N'est pas applicable
+04258211665b474dbe6fd9107fba52d6	Pas trouvé
+04258211665b474dbe6fd9107fba52d6	Non pris en charge sur cette plate-forme
+04258211665b474dbe6fd9107fba52d6	En attente
+04258211665b474dbe6fd9107fba52d6	Enregister
+04258211665b474dbe6fd9107fba52d6	Rédigé
+04258211665b474dbe6fd9107fba52d6	Rejeté
+04258211665b474dbe6fd9107fba52d6	Retirer
+04258211665b474dbe6fd9107fba52d6	Réinitialiser
+04258211665b474dbe6fd9107fba52d6	ID de réponse
+04258211665b474dbe6fd9107fba52d6	Tourner
+04258211665b474dbe6fd9107fba52d6	S
+04258211665b474dbe6fd9107fba52d6	SE
+04258211665b474dbe6fd9107fba52d6	RÉGLAGE DES EMPLACEMENTS:
+04258211665b474dbe6fd9107fba52d6	SO
+04258211665b474dbe6fd9107fba52d6	Enregister
+04258211665b474dbe6fd9107fba52d6	Garder pour plus tard
+04258211665b474dbe6fd9107fba52d6	Scanner
+04258211665b474dbe6fd9107fba52d6	Sélectionner
+04258211665b474dbe6fd9107fba52d6	Sélectionner...
+04258211665b474dbe6fd9107fba52d6	Définir à l'aide du GPS
+04258211665b474dbe6fd9107fba52d6	Définir à l'aide de la carte
+04258211665b474dbe6fd9107fba52d6	Définir comme image de couverture
+04258211665b474dbe6fd9107fba52d6	Définir l'emplacement à l'aide de
+04258211665b474dbe6fd9107fba52d6	Définition de l'emplacement dans {0} s ...
+04258211665b474dbe6fd9107fba52d6	Afficher les modifications
+04258211665b474dbe6fd9107fba52d6	Afficher l'historique complet des modifications
+04258211665b474dbe6fd9107fba52d6	Afficher l'historique
+04258211665b474dbe6fd9107fba52d6	Comencez
+04258211665b474dbe6fd9107fba52d6	Statut
+04258211665b474dbe6fd9107fba52d6	Arrêtez
+04258211665b474dbe6fd9107fba52d6	Soumettre
+04258211665b474dbe6fd9107fba52d6	Soumis
+04258211665b474dbe6fd9107fba52d6	Vrai
+04258211665b474dbe6fd9107fba52d6	Incapable de se connecter au serveur
+04258211665b474dbe6fd9107fba52d6	Impossible d'obtenir l'emplacement
+04258211665b474dbe6fd9107fba52d6	Impossible de rechercher l'emplacement
+04258211665b474dbe6fd9107fba52d6	Impossible de sélectionner ce site car il n'a pas d'ID mWater. Veuillez d'abord synchroniser avec le serveur.
+04258211665b474dbe6fd9107fba52d6	Peu sûr
+04258211665b474dbe6fd9107fba52d6	Télécharger l'image
+04258211665b474dbe6fd9107fba52d6	Importation annulée
+04258211665b474dbe6fd9107fba52d6	Échec de l'importation: {0}
+04258211665b474dbe6fd9107fba52d6	Téléchargement de l'image ...
+04258211665b474dbe6fd9107fba52d6	Intervalle de confiance supérieur à 95% / 100 ml
+04258211665b474dbe6fd9107fba52d6	Utiliser quand même
+04258211665b474dbe6fd9107fba52d6	Utiliser la carte
+04258211665b474dbe6fd9107fba52d6	Utiliser la localisation avec une précision très faible (± {0} m)?
+04258211665b474dbe6fd9107fba52d6	Utilisateur
+04258211665b474dbe6fd9107fba52d6	Signal GPS très faible ± {0} m
+04258211665b474dbe6fd9107fba52d6	Signal GPS très faible (± {0} m) ...
+04258211665b474dbe6fd9107fba52d6	W
+04258211665b474dbe6fd9107fba52d6	En attente du GPS ...
+04258211665b474dbe6fd9107fba52d6	Signal GPS faible (± {0} m) ...
+04258211665b474dbe6fd9107fba52d6	par
+04258211665b474dbe6fd9107fba52d6	km
+04258211665b474dbe6fd9107fba52d6	m
+04258211665b474dbe6fd9107fba52d6	ID Site mWater
+04258211665b474dbe6fd9107fba52d6	sur
